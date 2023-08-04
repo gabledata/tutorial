@@ -1,0 +1,53 @@
+{
+  "namespace": "transit",
+  "type": "record",
+  "name": "ScheduleAdherenceEvent",
+  "fields": [
+    {
+      "name": "agencyId",
+      "type": "string",
+      "doc": "Identifier of the transit agency that operates the vehicle"
+    },
+    {
+      "name": "routeId",
+      "type": "string",
+      "doc": "Identifier for the current route"
+    },
+    {
+      "name": "vehicleId",
+      "type": "string",
+      "doc": "Identifier for the vehicle"
+    },
+    {
+      "name": "stopId",
+      "type": "string",
+      "doc": "Identifier of the specific stop on the route"
+    },
+    {
+      "name": "plannedArrivalTime",
+      "type": "long",
+      "doc": "Planned arrival time in milliseconds since epoch"
+    },
+    {
+      "name": "actualArrivalTime",
+      "type": "long",
+      "doc": "Actual arrival time in milliseconds since epoch"
+    },
+    {
+      "name": "plannedDepartureTime",
+      "type": "long",
+      "doc": "Planned departure time in milliseconds since epoch"
+    },
+    {
+      "name": "actualDepartureTime",
+      "type": "long",
+      "doc": "Actual departure time in milliseconds since epoch"
+    },
+    {
+      "name": "delayReason",
+      "type": ["null", "string"],
+      "default": null,
+      "doc": "Reason for delay if any"
+    }
+  ]
+}

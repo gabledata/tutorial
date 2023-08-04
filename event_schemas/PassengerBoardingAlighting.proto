@@ -1,0 +1,11 @@
+syntax = "proto2";
+
+package transit;
+
+message PassengerBoardingAlightingEvent {
+  required string stopId = 1;
+  required string vehicleId = 2;
+  required int64 timestamp = 3;
+  required int32 passengersBoarding = 4;
+  required int32 passengersAlighting = 5;
+}
