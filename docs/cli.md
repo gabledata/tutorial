@@ -51,7 +51,7 @@ To establish an authenticated connection with Gable via the CLI, you need:
 
 You can find your API key by navigating to the `/settings` page of Gable. Under API Keys you can click `View` to reveal your API key.
 
-![Gable API Keys](./static/gable_settings_api_keys_page_example.png)
+![Gable API Keys](../static/gable_settings_api_keys_page_example.png)
 
 ### Set ENV variables
 
