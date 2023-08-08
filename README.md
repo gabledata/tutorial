@@ -4,11 +4,13 @@ Welcome to the tutorial for Gable! In this tutorial, you will:
 
 - Set up a forked tutorial repository with Gable and Github Actions
 - Validate and publish a new data contract
-- Attempt to modify a data asset under contract
+- Attempt to make a breaking change to a data asset under contract
 
-This tutorial utilizes Github Actions to validate and publish data contracts and register and check data assets with the Gable platform. If you would like to run a similar tutorial using just the CLI, we have that tutorial for you.
+This tutorial utilizes Github Actions to validate & publish data contracts, register data assets, and detect contract violations, all using the Gable platform. If you would like to run a similar tutorial using just the CLI, you can check out the [CLI tutorial](./docs/cli.md).
 
 ## Step 1: Set up a forked tutorial repository
+
+Our tutorial repository is a small, self contained sample repository that lets you run through the end-to-end process of publishing a data contract, and seeing that contract be enforced with Gable's platform. In this tutorial you'll create a fork of the repo, configure your Gable credentials, and run the CI/CD workflows in Github Actions. If you're using the credentials from your sandbox environment, you can even run through this tutorial by making a personal fork of this repository.
 
 ### Fork this repository into your account
 
@@ -24,7 +26,7 @@ After clicking the create button, wait a moment as GitHub creates a copy of the 
 
 In order to connect the Github Actions to Gable, you need:
 
-- The API endpoint associated with your organization
+- The API endpoint associated with your organization, in the format `https://api.<organization>.gable.ai/`
 - An API key that corresponds to the endpoint
 
 You can find your API key by navigating to the `/settings` page of Gable. Under API Keys you can click `View` to reveal your API key.
@@ -35,15 +37,7 @@ You can find your API key by navigating to the `/settings` page of Gable. Under 
 
 You will need to create the `GABLE_API_KEY` and `GABLE_API_ENDPOINT` secrets in your repository settings to configure Github Actions to talk to Gable.
 
-1. Navigate to the main page of your forked tutorial repository in Github
-2. Click on the "Settings" tab near the top-right corner of the page
-3. In the left-hand menu, scroll down and click on the "Secrets & security" section
-4. Click on "Actions" under the "Secrets" heading
-5. Click the "New repository secret" button
-6. In the "Name" field, type `GABLE_API_KEY`. This is the key for the API Key secret.
-7. In the "Secret" field, paste the API Key from the UI
-8. Click the "Add secret" button to save the secret
-9. Repeat steps 6 through 8 for the `GABLE_API_ENDPOINT`
+Follow the Github instructions for [Creating encrypted secrets for a repository](https://docs.github.com/en/actions/security-guides/encrypted-secrets#creating-encrypted-secrets-for-a-repository) to create the `GABLE_API_KEY`and `GABLE_API_ENDPOINT` repository secrets.
 
 ### Clone the forked tutorial repository
 
@@ -60,11 +54,11 @@ Congratulations! You've set up your tutorial repository and are ready to try out
 
 ## Step 2: Creating Your First Data Contract
 
-The tutorial repository includes three data asset files for a fake public transit agency. The data assets are two Protobuf files and one Avro file which handle different aspects of the data for the public transit agency.
+The tutorial repository includes three data asset files for a fake public transit agency. The data assets are two Protobuf files and one Avro file which represent different events for the public transit agency.
 
 ### Create a new branch to add the contract
 
-You are going to create a new data contract in the tutorial repository. Rather than creating the contract in the `main` branch of the repository, it is best practice to use branches and then make a Pull Request to merge the changes in. The PR allows others to comment on your changes and also allows the Github Actions to validate the contract is syntactically correct before pushing changes.
+You are going to create a new data contract in the tutorial repository. Just like code changes, rather than creating the contract in the `main` branch of the repository, it's best practice to create a new branch, and open a Pull Request for the changes. The PR allows others to comment on your changes, and also allows the Github Actions to validate the contract is syntactically correct before pushing changes.
 
 You can either create a new branch using the Github web interface or using the git command line tools. This tutorial will walk through creating the branch using the git command line. In the tutorial repository on your local machine:
 
@@ -75,23 +69,11 @@ You can either create a new branch using the Github web interface or using the g
    git checkout -b first_contract
    ```
 
-3. **Push the New Branch to GitHub**: To make this branch available on GitHub, you need to push it. Use the following command:
-
-   ```bash
-   git push origin first_contract
-   ```
-
-4. **Set the Upstream Branch**: You will want to set this new branch as the tracking branch. To do this, run:
-
-   ```bash
-   git branch --set-upstream-to=origin/first_contract
-   ```
-
 Great! Now you can start writing the contract!
 
 ### Write the data contract
 
-You are going to create a data contract for teh `VehicleLocation.proto` file which handles data reporting the location and status of a vehicle in the transit agency. Writing a data contract involves creating a YAML file that declares the schema and semantics of the data following the [data contract specification](https://docs.gable.ai/data_contracts/what_are_data_contracts/data_contract_spec).
+You are going to create a data contract for the `VehicleLocation.proto` file, which represents a location and status tracking event for a vehicle in the transit agency. Writing a data contract involves creating a YAML file that declares the schema and semantics of the data following the [data contract specification](https://docs.gable.ai/data_contracts/what_are_data_contracts/data_contract_spec).
 
 In the `contracts` directory of your local repository, create a file called `vehicle_location.yaml`. Copy and paste the following into the contents of that file:
 
@@ -159,6 +141,10 @@ To create the Pull Request:
 
 8. Click the "Create Pull Request" button.
 
+Once your PR is open, Gable's contract validation CI/CD check runs automatically to check for syntax errors in your data contracts. You can open the `Validate Data Contracts` check to see the status, if there were any errors in your contract they would appear here.
+
+![Validate Data Contracts Check Results](./static/validate_contracts_check_results.png)
+
 ### Publish the Data Contract
 
 Merge the Pull Request you opened. This will kick off the Github Action which publishes the contract.
@@ -169,7 +155,7 @@ Once the Github Action on the `main` branch has been run and the data contract h
 
 **NOTE**: This section relies on the `VehicleLocationEvent` data contract created in the previous step. Please complete that step if you have not already.
 
-Now that there is a data contract in place for the `VehicleLocationEvent` data, every time a change is made to the data asset, Gable checks to ensure that changes do not violate the contract. In this section, you will attempt to make a breaking change to the `VehicleLocationEvent` data.
+Now that there is a data contract in place for the `VehicleLocationEvent` data, every time a change is made to the Protobuf file, Gable checks to ensure that changes do not violate the contract. Let's try making a breaking change to the `VehicleLocationEvent`.
 
 ### Create a new branch
 
@@ -183,7 +169,7 @@ git checkout -b breaking_data_change
 
 ### Make a Breaking Change
 
-Modify the `VehicleLocation.proto` file by changing the `status` column to `vehicleStatus`. This renames a field that is protected in the data contract and will result in a violation of the contract.
+Modify the `VehicleLocation.proto` file by changing the `status` column to `vehicleStatus`. This renames a field that is protected in the data contract, which is a violation of the contract.
 
 Once the change has been saved, commit the change and push it to Github:
 
