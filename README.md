@@ -41,7 +41,7 @@ You will need to create the `GABLE_API_KEY` and `GABLE_API_ENDPOINT` secrets in 
 4. Click on "Actions" under the "Secrets" heading
 5. Click the "New repository secret" button
 6. In the "Name" field, type `GABLE_API_KEY`. This is the key for the API Key secret.
-7. In the "Value" field, paste the API Key from the UI
+7. In the "Secret" field, paste the API Key from the UI
 8. Click the "Add secret" button to save the secret
 9. Repeat steps 6 through 8 for the `GABLE_API_ENDPOINT`
 
@@ -161,9 +161,9 @@ To create the Pull Request:
 
 ### Publish the Data Contract
 
-Merge the Pull Request you opened. This will
+Merge the Pull Request you opened. This will kick off the Github Action which publishes the contract.
 
-Once the Github Action on the main branch has been run and the data contract has been published, navigate to the Gable UI and you should see your new data contract!
+Once the Github Action on the `main` branch has been run and the data contract has been published, navigate to the Gable UI and you should see your new data contract!
 
 ## Step 3: Preventing Breaking Data Changes
 
