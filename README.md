@@ -2,160 +2,205 @@
 
 Welcome to the tutorial for Gable! In this tutorial, you will:
 
-- Set up a local environment to connect to Gable's platform
-- Register Protobuf and Avro files as Data Assets in Gable's platform
-- Publish data contracts for a Protobuf and an Avro file
-- Check to ensure that the data assets to not violate the data contract
+- Set up a forked tutorial repository with Gable and Github Actions
+- Validate and publish a new data contract
+- Attempt to make a breaking change to a data asset under contract
 
-## Step 1: Set up Gable CLI
+This tutorial utilizes Github Actions to validate & publish data contracts, register data assets, and detect contract violations, all using the Gable platform. If you would like to run a similar tutorial using just the CLI, you can check out the [CLI tutorial](./docs/cli.md).
 
-Gable uses a Python-based CLI to interact with the Gable API. The Gable CLI requires a Python environment running at least Python 3.10.
+## Step 1: Set up a forked tutorial repository
 
-### Clone this tutorial repository
+Our tutorial repository is a small, self contained sample repository that lets you run through the end-to-end process of publishing a data contract, and seeing that contract be enforced with Gable's platform. In this tutorial you'll create a fork of the repo, configure your Gable credentials, and run the CI/CD workflows in Github Actions. If you're using the credentials from your sandbox environment, you can even run through this tutorial by making a personal fork of this repository.
 
-The first step is to clone this tutorial repository onto your local machine. Open a terminal and run:
+### Fork this repository into your account
 
-```bash
-git clone https://github.com/gabledata/tutorial.git
-cd tutorial
-```
+Navigate to the [tutorial repository](https://github.com/gabledata/tutorial) and click on the "Fork" button in the top-right corner of the repository's page.
 
-### Recommended: Create and Activate Virtual Environment
+![Fork Tutorial Repo](./static/gable_fork_tutorial.png)
 
-For this tutorial, it is recommended you install Gable into a virtual environment. This will keep the current installation of the Gable CLI separate from any other Python environments on your local machine. To create a virtual environment, open your terminal and run:
+A dialog may appear, asking you where to fork the repository (if you're part of any organizations). Choose your personal account (or the desired organization) to create the fork.
 
-```bash
-python3 -m venv gable_tutorial
-```
-
-This will create a virtual environment called `gable_tutorial`. To activate the environment, run:
-
-```bash
-source gable_tutorial/bin/activate
-```
-
-### Install CLI Download
-
-Gable's CLI is hosted on PyPi and can be installed with any Python package manager like `pip`. To install the Gable CLI with pip, run:
-
-```bash
-pip install gable
-```
+After clicking the create button, wait a moment as GitHub creates a copy of the repository under your account.
 
 ### Get Your API Key
 
-To establish an authenticated connection with Gable via the CLI, you need:
+In order to connect the Github Actions to Gable, you need:
 
-- The API endpoint associated with your organization
+- The API endpoint associated with your organization, in the format `https://api.<organization>.gable.ai/`
 - An API key that corresponds to the endpoint
 
 You can find your API key by navigating to the `/settings` page of Gable. Under API Keys you can click `View` to reveal your API key.
 
 ![Gable API Keys](./static/gable_settings_api_keys_page_example.png)
 
-### Set ENV variables
+### Setting up GABLE_API_KEY and GABLE_API_ENDPOINT secrets
 
-In order to pass your API endpoint and API Key to the Gable CLI, you should set them as environment variables. For the purposes of this tutorial, you can simply run the following command in your terminal:
+You will need to create the `GABLE_API_KEY` and `GABLE_API_ENDPOINT` secrets in your repository settings to configure Github Actions to talk to Gable.
 
-```bash
-export GABLE_API_ENDPOINT="https://api.yourorganization.gable.ai"
-export GABLE_API_KEY="yourapikey"
-```
+Follow the Github instructions for [Creating encrypted secrets for a repository](https://docs.github.com/en/actions/security-guides/encrypted-secrets#creating-encrypted-secrets-for-a-repository) to create the `GABLE_API_KEY`and `GABLE_API_ENDPOINT` repository secrets.
 
-Make sure to replace `youorganization` with your provided organization name and `yourapikey` with your actual API key from the previous step.
+### Clone the forked tutorial repository
 
-### Check connection
+The last setup step is to clone the forked repository to your local machine. Navigate to the main page of the forked repository within your GitHub account and click the "Code" button and copy either the HTTPS or SSH url for the repository.
 
-To confirm that everything is working, run the following command:
+Now open a terminal and run:
 
 ```bash
-gable ping
+git clone COPIED_REPO_URL
+cd tutorial
 ```
 
-If everything is set up correctly, you should receive a success message confirming the connection.
+Congratulations! You've set up your tutorial repository and are ready to try out Gable's platform!
 
-## Step 2: Registering Data Assets
+## Step 2: Creating Your First Data Contract
 
-Included in this tutorial are two Protobuf files and one Avro file which we will register as data assets.
+The tutorial repository includes three data asset files for a fake public transit agency. The data assets are two Protobuf files and one Avro file which represent different events for the public transit agency.
 
-1. First, register the two Protobuf files with the following command:
+### Create a new branch to add the contract
 
-   ```bash
-   gable data-asset register --source-type protobuf \
-       --files ./event_schemas/*.proto
-   ```
+You are going to create a new data contract in the tutorial repository. Just like code changes, rather than creating the contract in the `main` branch of the repository, it's best practice to create a new branch, and open a Pull Request for the changes. The PR allows others to comment on your changes, and also allows the Github Actions to validate the contract is syntactically correct before pushing changes.
 
-   This command will register and files with a `proto` extension in the `event_schemas` directory. This command is idempotent so running it multiple times will not duplicate data assets.
+You can either create a new branch using the Github web interface or using the git command line tools. This tutorial will walk through creating the branch using the git command line. In the tutorial repository on your local machine:
 
-   If successful, you will receive a message with the ids of the registered Protobuf data assets.
-
-2. Register the Avro schema by running the following command:
+1. **Open a Terminal Window**: Navigate to the directory where your cloned tutorial repository is located
+2. **Checkout a New Branch**: Use the following command to create and switch to a new branch called `first_contract`:
 
    ```bash
-   gable data-asset register --source-type avro \
-       --files ./event_schemas/*.avsc
+   git checkout -b first_contract
    ```
 
-   This command will register and files with a `avsc` extension in the `event_schemas` directory.
+Great! Now you can start writing the contract!
 
-3. To get a list of all of your registered data assets, run:
+### Write the data contract
 
-   ```bash
-   gable data-asset list
+You are going to create a data contract for the `VehicleLocation.proto` file, which represents a location and status tracking event for a vehicle in the transit agency. Writing a data contract involves creating a YAML file that declares the schema and semantics of the data following the [data contract specification](https://docs.gable.ai/data_contracts/what_are_data_contracts/data_contract_spec).
+
+In the `contracts` directory of your local repository, create a file called `vehicle_location.yaml`. Copy and paste the following into the contents of that file:
+
+```yaml
+id: 6b7f4f6c-324c-4a26-9114-eefdee49d5c9
+dataAssetResourceName: protobuf://git@github.com:gabledata/event_schemas/VehicleLocation.proto:transit.VehicleLocationEvent
+spec-version: 0.1.0
+name: VehicleLocationEvent
+namespace: Transit
+doc: Real-time location and status of a transit vehicle
+owner: Chad Gable
+schema:
+  - name: agencyId
+    doc: The ID of the transit agency that operates this route.
+    type: string32
+  - name: vehicleId
+    doc: The identifier of the specific vehicle
+    type: string32
+  - name: timestamp
+    doc: Epoch timestamp of the vehicle location
+    type: int64
+  - name: latitude
+    doc: The latitude of the vehicle location
+    type: float32
+  - name: longitude
+    doc: The longitude of the vehicle location
+    type: float32
+  - name: status
+    doc: Status of the vehicle at the time of the location update
+    type: string32
+```
+
+This contract contains information on what data the contract applies to, who owns the contract, as well as the minimum expected schema for the data from the `VehicleLocationEvent`.
+
+### Push Your Changes to Github
+
+Now that you have created the contract, it is time to commit the change to the repository. To stage and commit your changes, run:
+
+```bash
+git add .
+git commit -m "Added vehicle location data contract"
+git push
+```
+
+### Validate the data contract
+
+Before merging your changes back to the `main` branch, it is a good idea to create a Pull Request. Creating the Pull Request will serve two purposes:
+
+- Allow others to review your newly-created data contract
+- Allow the Github Action to validate the data contract is syntactically correct
+
+To create the Pull Request:
+
+1. Navigate to the main page of your forked tutorial repository in Github
+2. Click on the "Pull requests" tab near the top of the page
+3. Click the "New Pull Request" button
+4. In the "base" dropdown, select the `main` branch
+5. In the "compare" dropdown, select the `first_contract` branch that contains your new data contract
+6. In the "Title" field, add `New VehicleLocationEvent Data Contract`
+7. In the "Leave a comment" field, add the following:
+
+   ```
+   Adds a new data contract for the `VehicleLocationEvent` data.
    ```
 
-## Step 3: Publish the Data Contract
+8. Click the "Create Pull Request" button.
 
-1. Before you register the data contract in Gable's platform, you first want to validate that the data contract is syntactically correct. Run:
+Once your PR is open, Gable's contract validation CI/CD check runs automatically to check for syntax errors in your data contracts. You can open the `Validate Data Contracts` check to see the status, if there were any errors in your contract they would appear here.
 
-   ```bash
-   gable contract validate ./contracts/*.yaml
+![Validate Data Contracts Check Results](./static/validate_contracts_check_results.png)
+
+### Publish the Data Contract
+
+Merge the Pull Request you opened. This will kick off the Github Action which publishes the contract.
+
+Once the Github Action on the `main` branch has been run and the data contract has been published, navigate to the Gable UI and you should see your new data contract!
+
+## Step 3: Preventing Breaking Data Changes
+
+**NOTE**: This section relies on the `VehicleLocationEvent` data contract created in the previous step. Please complete that step if you have not already.
+
+Now that there is a data contract in place for the `VehicleLocationEvent` data, every time a change is made to the Protobuf file, Gable checks to ensure that changes do not violate the contract. Let's try making a breaking change to the `VehicleLocationEvent`.
+
+### Create a new branch
+
+First off, pull changes down from the main branch to ensure that your repository is up-to-date. Create a new branch called `breaking_data_change`:
+
+```bash
+git checkout main
+git pull
+git checkout -b breaking_data_change
+```
+
+### Make a Breaking Change
+
+Modify the `VehicleLocation.proto` file by changing the `status` column to `vehicleStatus`. This renames a field that is protected in the data contract, which is a violation of the contract.
+
+Once the change has been saved, commit the change and push it to Github:
+
+```bash
+git add .
+git commit -m "Rename VehicleLocationEvent status field"
+git push
+```
+
+### Open a Pull Request
+
+Now open a Pull Request for the proposed breaking change:
+
+1. Navigate to the main page of your forked tutorial repository in Github
+2. Click on the "Pull requests" tab near the top of the page
+3. Click the "New Pull Request" button
+4. In the "base" dropdown, select the `main` branch
+5. In the "compare" dropdown, select the `breaking_data_change` branch that contains the breaking data change
+6. In the "Title" field, add `Rename status field in VehicleLocationEvent Data`
+7. In the "Leave a comment" field, add the following:
+
+   ```
+   Rename the `status` field to `vehicleStatus` in `VehicleLocationEvent` data.
    ```
 
-   This command will validate any files with a `yaml` extension in the `contracts` directory to confirm they are valid data contracts.
+8. Click the "Create Pull Request" button.
 
-2. To publish the data contract with Gable CLI, run:
+### View Warning Message
 
-   ```bash
-   gable contract publish ./contracts/*.yaml
-   ```
+The Github Action will validate the changes against existing data contracts. It will detect the change to the `VehicleLocationEvent` schema and post a message in the PR that this change breaks the existing data contract.
 
-   This command will publish any files with a `yaml` extension in the `contracts` directory to the Gable platform. This command is idempotent so running it multiple times will not duplicate data contracts. It will only register new versions of the data contract if there are changes.
+## Further Reading
 
-   If successful, you will receive a message with the ids of the published data contracts.
-
-3. Check back in the UI and you should see your two data contracts listed.
-
-## Step 4: Checking the Data
-
-The last step is to ensure
-
-1. First, check to ensure that your current Protobuf data assets are compliant with the published data contract by running:
-
-   ```bash
-   gable data-asset check \
-       --source-type protobuf --files ./event_schemas/*.proto
-   ```
-
-   The CLI will surface a warning for any data assets not under contract. For any data assets under contract, in this case `VehicleLocation.proto`, it should return a success message that the data asset is not in violation of its contract.
-
-2. Confirm that the Avro file is also in complaince by running:
-
-   ```bash
-   gable data-asset check \
-       --source-type avro --files ./event_schemas/*.avsc
-   ```
-
-3. Modify the `VehicleLocation.proto` file by changing the `status` column to `vehicleStatus`. This renames a field that is under the data contract and will result in a violation of the contract.
-
-4. Rerun the Protobuf check
-
-   ```bash
-   gable data-asset check \
-       --source-type protobuf --files ./event_schemas/*.proto
-   ```
-
-   As expected, the data asset is failing the check because it is in violation of the contract!
-
-
-Congratulations for creating your first data contracts! Be sure to check out more of [Gable's documentation](https://docs.gable.ai) for more information on our platform!
+Congratulations on creating your first data contract and validating data asset changes! Be sure to check out more of [Gable's documentation](https://docs.gable.ai) for more information on our platform!
