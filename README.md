@@ -22,6 +22,14 @@ A dialog may appear, asking you where to fork the repository (if you're part of 
 
 After clicking the create button, wait a moment as GitHub creates a copy of the repository under your account.
 
+### Allow Github to Run Workflow
+
+Github is cautious when running workflows for forked repositories so you need to grant explicit permission to run the workflows on the tutorial repository. Navigate to your forked repository in Github and click on the Actions tab.  You'll see a message like the following:
+
+![Allow Workflows](./static/gable_allow_workflows.png)
+
+Click on the "I understand my workflows, go ahead and enable them" button.
+
 ### Get Your API Key
 
 In order to connect the Github Actions to Gable, you need:
@@ -50,6 +58,15 @@ git clone COPIED_REPO_URL
 cd tutorial
 ```
 
+### Trigger Data Asset Registration
+
+In order to kick off the first workflow to register the data assets, you'll need to push an empty commit to the repository.  Run:
+
+```bash
+git commit --allow-empty -m "Run workflow"
+git push
+```
+
 Congratulations! You've set up your tutorial repository and are ready to try out Gable's platform!
 
 ## Step 2: Creating Your First Data Contract
@@ -75,11 +92,17 @@ Great! Now you can start writing the contract!
 
 You are going to create a data contract for the `VehicleLocation.proto` file, which represents a location and status tracking event for a vehicle in the transit agency. Writing a data contract involves creating a YAML file that declares the schema and semantics of the data following the [data contract specification](https://docs.gable.ai/data_contracts/what_are_data_contracts/data_contract_spec).
 
+Contracts are associated with a specific data asset.  Protobuf files encode the git path they are stored in so for `VehicleLocation`, so the data asset name will include 
+
+```code
+protobuf://git@github.com:<ACCOUNT_NAME>/event_schemas/VehicleLocation.proto:transit.VehicleLocationEvent
+```
+
 In the `contracts` directory of your local repository, create a file called `vehicle_location.yaml`. Copy and paste the following into the contents of that file:
 
 ```yaml
 id: 6b7f4f6c-324c-4a26-9114-eefdee49d5c9
-dataAssetResourceName: protobuf://git@github.com:gabledata/event_schemas/VehicleLocation.proto:transit.VehicleLocationEvent
+dataAssetResourceName: <DATA_ASSET_NAME_FROM_ABOVE>
 spec-version: 0.1.0
 name: VehicleLocationEvent
 namespace: Transit
@@ -188,7 +211,7 @@ Now open a Pull Request for the proposed breaking change:
 3. Click the "New Pull Request" button
 4. In the "base" dropdown, select the `main` branch
 5. In the "compare" dropdown, select the `breaking_data_change` branch that contains the breaking data change
-6. In the "Title" field, add `Rename status field in VehicleLocationEvent Data`
+6. In the "Title" field, add `Rename VehicleLocationEvent status field`
 7. In the "Leave a comment" field, add the following:
 
    ```
