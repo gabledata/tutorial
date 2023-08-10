@@ -26,7 +26,7 @@ After clicking the create button, wait a moment as GitHub creates a copy of the 
 
 Github is cautious when running workflows for forked repositories so you need to grant explicit permission to run the workflows on the tutorial repository. Navigate to your forked repository in Github and click on the Actions tab.  You'll see a message like the following:
 
-![Allow Workflows](./static/gable_allow_workflows.png)
+![Allow Workflows](./static/github_allow_workflows.png)
 
 Click on the "I understand my workflows, go ahead and enable them" button.
 
