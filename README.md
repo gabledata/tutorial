@@ -10,7 +10,7 @@ This tutorial utilizes Github Actions to validate & publish data contracts, regi
 
 ## Step 1: Set up a forked tutorial repository
 
-Our tutorial repository is a small, self contained sample repository that lets you run through the end-to-end process of publishing a data contract, and seeing that contract be enforced with Gable's platform. In this tutorial you'll create a fork of the repo, configure your Gable credentials, and run the CI/CD workflows in Github Actions. If you're using the credentials from your sandbox environment, you can even run through this tutorial by making a personal fork of this repository.
+The tutorial repository is a small, self contained sample repository that lets you run through the end-to-end process of publishing a data contract and seeing that contract be enforced with Gable's platform. In this tutorial, you'll create a fork of the repository, configure your Gable credentials, and run the CI/CD workflows in Github Actions. If you're using the credentials from your sandbox environment, you can even run through this tutorial by making a personal fork of this repository.
 
 ### Fork this repository into your account
 
@@ -24,11 +24,11 @@ After clicking the create button, wait a moment as GitHub creates a copy of the 
 
 ### Allow Github to Run Workflow
 
-Github is cautious when running workflows for forked repositories so you need to grant explicit permission to run the workflows on the tutorial repository. Navigate to your forked repository in Github and click on the Actions tab.  You'll see a message like the following:
+Github is cautious when running workflows for forked repositories so you need to grant explicit permission to run the workflows for the tutorial. Navigate to your forked repository in Github and click on the Actions tab. You'll see a message like the following:
 
 ![Allow Workflows](./static/github_allow_workflows.png)
 
-Click on the "I understand my workflows, go ahead and enable them" button.
+Click on the "I understand my workflows, go ahead and enable them" button. This will give Github permission to run the CI/CD checks that come bundled with the tutorial.
 
 ### Get Your API Key
 
@@ -43,7 +43,7 @@ You can find your API key by navigating to the `/settings` page of Gable. Under 
 
 ### Setting up GABLE_API_KEY and GABLE_API_ENDPOINT secrets
 
-You will need to create the `GABLE_API_KEY` and `GABLE_API_ENDPOINT` secrets in your repository settings to configure Github Actions to talk to Gable.
+Next, you will need to create the `GABLE_API_KEY` and `GABLE_API_ENDPOINT` secrets in your repository settings to configure Github Actions to talk to Gable.
 
 Follow the Github instructions for [Creating encrypted secrets for a repository](https://docs.github.com/en/actions/security-guides/encrypted-secrets#creating-encrypted-secrets-for-a-repository) to create the `GABLE_API_KEY`and `GABLE_API_ENDPOINT` repository secrets.
 
@@ -60,12 +60,14 @@ cd tutorial
 
 ### Trigger Data Asset Registration
 
-In order to kick off the first workflow to register the data assets, you'll need to push an empty commit to the repository.  Run:
+In order to kick off the first workflow to register the data assets, you'll need to push an empty commit to the repository. Run:
 
 ```bash
 git commit --allow-empty -m "Run workflow"
 git push
 ```
+
+Once the workflow completes, you should be able to see the `ScheduleAdherenceEvent` contract in the Gable UI.
 
 Congratulations! You've set up your tutorial repository and are ready to try out Gable's platform!
 
@@ -92,11 +94,15 @@ Great! Now you can start writing the contract!
 
 You are going to create a data contract for the `VehicleLocation.proto` file, which represents a location and status tracking event for a vehicle in the transit agency. Writing a data contract involves creating a YAML file that declares the schema and semantics of the data following the [data contract specification](https://docs.gable.ai/data_contracts/what_are_data_contracts/data_contract_spec).
 
-Contracts are associated with a specific data asset.  Protobuf files encode the git path they are stored in so for `VehicleLocation`, so the data asset name will include 
+Contracts are associated with a specific data asset. Gable's data asset name for Protobuf files encode the git path they are stored in so for `VehicleLocation`, so the data asset name will include the account name of the repo.  For the `VehicleLocation` file, it'll be something like:
 
 ```code
 protobuf://git@github.com:<ACCOUNT_NAME>/event_schemas/VehicleLocation.proto:transit.VehicleLocationEvent
 ```
+
+You will need to replace the `<ACCOUNT_NAME>` with the name of the account/organization where the forked tutorial lives.  For example, in the screenshot below, you would replace `<ACCOUNT_NAME>` with `chadgable`:
+
+![Tutorial Account Name](./static/tutorial_account_name.png)
 
 In the `contracts` directory of your local repository, create a file called `vehicle_location.yaml`. Copy and paste the following into the contents of that file:
 
@@ -128,6 +134,8 @@ schema:
     doc: Status of the vehicle at the time of the location update
     type: string32
 ```
+
+**Make sure to replace the `<DATA_ASSET_NAME_FROM_ABOVE>` with the `VehicleLocation` data asset name.**
 
 This contract contains information on what data the contract applies to, who owns the contract, as well as the minimum expected schema for the data from the `VehicleLocationEvent`.
 
@@ -223,6 +231,8 @@ Now open a Pull Request for the proposed breaking change:
 ### View Warning Message
 
 The Github Action will validate the changes against existing data contracts. It will detect the change to the `VehicleLocationEvent` schema and post a message in the PR that this change breaks the existing data contract.
+
+![Contract Violation PR Comment](./static/pr_comment_contract_violation.png)
 
 ## Further Reading
 
