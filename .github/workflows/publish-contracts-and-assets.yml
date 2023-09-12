@@ -12,6 +12,7 @@ jobs:
   validate-publish-contracts:
     runs-on: ubuntu-latest
     name: 'Validate & Publish Contracts'
+    needs: [register-data-assets]
     steps:
       - name: Validate Contracts
         uses: gabledata/cicd/github-actions/validate-contracts@latest
