@@ -1,10 +1,10 @@
 id: a873cc93-67a3-4895-8c98-19443af403bf
-dataAssetResourceName: avro://git@github.com:gabledata/event_schemas/ScheduleAdherence.avsc:transit.ScheduleAdherenceEvent
+dataAssetResourceName: avro://git@github.com:adrianisk/event_schemas/ScheduleAdherence.avsc:transit.ScheduleAdherenceEvent
 spec-version: 0.1.0
 name: ScheduleAdherenceEvent
 namespace: Transit
 doc: Record of the difference between a vehicle's planned arrival time and its actual arrival time at a stop
-owner: Chad Gable
+owner: adrian@gable.ai
 schema:
   - name: agencyId
     doc: The identifier of the transit agency that operates the vehicle
