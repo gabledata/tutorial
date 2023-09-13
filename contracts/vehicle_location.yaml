@@ -21,6 +21,6 @@ schema:
   - name: longitude
     doc: The longitude of the vehicle location
     type: float32
-  - name: status
+  - name: vehicleStatus
     doc: Status of the vehicle at the time of the location update
     type: string32
