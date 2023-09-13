@@ -34,7 +34,9 @@ Click on the "I understand my workflows, go ahead and enable them" button. This 
 
 In order to connect the Github Actions to Gable, you need:
 
-- The API endpoint associated with your organization, in the format `https://api.<organization>.gable.ai/`
+- The API endpoint associated with your organization, in the format:
+   - Production: `https://api.<organization>.gable.ai/`
+   - Sandbox: `https://api-sandbox.<organization>.gable.ai/`
 - An API key that corresponds to the endpoint
 
 You can find your API key by navigating to the `/settings` page of Gable. Under API Keys you can click `View` to reveal your API key.
@@ -144,7 +146,7 @@ Now that you have created the contract, it is time to commit the change to the r
 ```bash
 git add .
 git commit -m "Added vehicle location data contract"
-git push
+git push origin first_contract
 ```
 
 ### Validate the data contract
@@ -205,7 +207,7 @@ Once the change has been saved, commit the change and push it to Github:
 ```bash
 git add .
 git commit -m "Rename VehicleLocationEvent status field"
-git push
+git push origin breaking_data_change
 ```
 
 ### Open a Pull Request
