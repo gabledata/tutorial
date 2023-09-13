@@ -94,26 +94,24 @@ Great! Now you can start writing the contract!
 
 You are going to create a data contract for the `VehicleLocation.proto` file, which represents a location and status tracking event for a vehicle in the transit agency. Writing a data contract involves creating a YAML file that declares the schema and semantics of the data following the [data contract specification](https://docs.gable.ai/data_contracts/what_are_data_contracts/data_contract_spec).
 
-Contracts are associated with a specific data asset. Gable's data asset name for Protobuf files encode the git path they are stored in so for `VehicleLocation`, so the data asset name will include the account name of the repo.  For the `VehicleLocation` file, it'll be something like:
+Contracts are associated with a specific data asset. When you first enabled Github Actions, it created three data assets in Gable for `PassengerBoardingAlightingEvent`, `ScheduleAdherenceEvent`, `VehicleLocationEvent`. You can navigate to the `Data Assets` page to view a list of your organization's assets.
 
-```code
-protobuf://git@github.com:<ACCOUNT_NAME>/event_schemas/VehicleLocation.proto:transit.VehicleLocationEvent
-```
+![Gable Data Assets](./static/gable_data_asset_list.png)
 
-You will need to replace the `<ACCOUNT_NAME>` with the name of the account/organization where the forked tutorial lives.  For example, in the screenshot below, you would replace `<ACCOUNT_NAME>` with `chadgable`:
+You can click on the data asset where you can view its details including the ID Gable uses for the asset. You can click on the clipboard next to the ID to copy it into the contract below.
 
-![Tutorial Account Name](./static/tutorial_account_name.png)
+![Gable Data Asset Details](./static/gable_data_asset_detail.png)
 
 In the `contracts` directory of your local repository, create a file called `vehicle_location.yaml`. Copy and paste the following into the contents of that file:
 
 ```yaml
 id: 6b7f4f6c-324c-4a26-9114-eefdee49d5c9
-dataAssetResourceName: <DATA_ASSET_NAME_FROM_ABOVE>
+dataAssetResourceName: <DATA_ASSET_NAME_FROM_GABLE>
 spec-version: 0.1.0
 name: VehicleLocationEvent
 namespace: Transit
 doc: Real-time location and status of a transit vehicle
-owner: Chad Gable
+owner: chadgable@gable.ai
 schema:
   - name: agencyId
     doc: The ID of the transit agency that operates this route.
@@ -135,7 +133,7 @@ schema:
     type: string32
 ```
 
-**Make sure to replace the `<DATA_ASSET_NAME_FROM_ABOVE>` with the `VehicleLocation` data asset name.**
+**Make sure to replace the `<DATA_ASSET_NAME_FROM_ABOVE>` with the `VehicleLocation` data asset name from the UI**
 
 This contract contains information on what data the contract applies to, who owns the contract, as well as the minimum expected schema for the data from the `VehicleLocationEvent`.
 

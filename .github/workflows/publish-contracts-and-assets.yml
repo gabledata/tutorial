@@ -12,8 +12,21 @@ jobs:
   validate-publish-contracts:
     runs-on: ubuntu-latest
     name: 'Validate & Publish Contracts'
+    needs: [register-data-assets]
     steps:
+      # By default, the Gable CLI will exit with a non-zero exit code if no contracts are found when calling the
+      # validate or publish command. For this tutorial, there won't be any contracts in the repo to start, so we
+      # need this extra step to check if we should skip validation
+      - shell: bash
+        run: |
+          if ls ./contracts/*.yaml 1> /dev/null 2>&1; then
+              echo "Found contract files, publishing contracts..."
+          else
+              echo "No contract files found, skipping contract validation..."
+              echo SKIP_VALIDATION=true >> $GITHUB_ENV
+          fi
       - name: Validate Contracts
+        if: ${{ env.SKIP_VALIDATION  != 'true' }}
         uses: gabledata/cicd/github-actions/validate-contracts@latest
         with:
           # Provide API key and endpoint secrets
@@ -25,6 +38,7 @@ jobs:
           contract-paths: |
             ./contracts/*.yaml
       - name: Publish Contracts
+        if: ${{ env.SKIP_VALIDATION  != 'true' }}
         uses: gabledata/cicd/github-actions/publish-contracts@latest
         with:
           # Provide API key and endpoint secrets
