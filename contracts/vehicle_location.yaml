@@ -1,0 +1,26 @@
+id: 6b7f4f6c-324c-4a26-9114-eefdee49d5c9
+dataAssetResourceName: protobuf://git@github.com:adrianisk/event_schemas/VehicleLocation.proto:transit.VehicleLocationEvent
+spec-version: 0.1.0
+name: VehicleLocationEvent
+namespace: Transit
+doc: Real-time location and status of a transit vehicle
+owner: chadgable@gable.ai
+schema:
+  - name: agencyId
+    doc: The ID of the transit agency that operates this route.
+    type: string32
+  - name: vehicleId
+    doc: The identifier of the specific vehicle
+    type: string32
+  - name: timestamp
+    doc: Epoch timestamp of the vehicle location
+    type: int64
+  - name: latitude
+    doc: The latitude of the vehicle location
+    type: float32
+  - name: longitude
+    doc: The longitude of the vehicle location
+    type: float32
+  - name: status
+    doc: Status of the vehicle at the time of the location update
+    type: string32
