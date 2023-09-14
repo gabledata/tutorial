@@ -8,7 +8,7 @@ message VehicleLocationEvent {
   required int64 timestamp = 3;
   required double latitude = 4;
   required double longitude = 5;
-  required string status = 6;
+  required string vehicleStatus = 6;
   optional string routeId = 7;
   optional int32 occupancyLevel = 8;
 }
