@@ -1,0 +1,27 @@
+id: a873cc93-67a3-4895-8c98-19443af403bf
+dataAssetResourceName: avro://git@github.com:adrianisk/event_schemas/ScheduleAdherence.avsc:transit.ScheduleAdherenceEvent
+spec-version: 0.1.0
+name: ScheduleAdherenceEvent
+namespace: Transit
+doc: Record of the difference between a vehicle's planned arrival time and its
+  actual arrival time at a stop
+owner: adrian@gable.ai
+schema:
+  - name: agencyId
+    doc: The identifier of the transit agency that operates the vehicle
+    type: string
+  - name: vehicleId
+    doc: The identifier of the specific vehicle
+    type: string
+  - name: routeId
+    doc: The identifier of the route the vehicle is running
+    type: string
+  - name: stopId
+    doc: The identifier of the specific stop on the route
+    type: string
+  - name: plannedArrivalTime
+    doc: Planned arrival time in milliseconds since epoch
+    type: int64
+  - name: actualArrivalTime
+    doc: Actual arrival time in milliseconds since epoch
+    type: int64
