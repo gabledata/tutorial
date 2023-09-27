@@ -117,13 +117,17 @@ owner: chadgable@gable.ai
 schema:
   - name: agencyId
     doc: The ID of the transit agency that operates this route.
-    type: string32
+    type: string
   - name: vehicleId
     doc: The identifier of the specific vehicle
-    type: string32
+    type: string
+  - name: routeId
+    doc: The route ID the vehicle is driving, if applicable
+    type: string
+    optional: true
   - name: timestamp
-    doc: Epoch timestamp of the vehicle location
-    type: int64
+    doc: Timestamp of the vehicle location event
+    type: timestamp64
   - name: latitude
     doc: The latitude of the vehicle location
     type: float32
@@ -132,7 +136,7 @@ schema:
     type: float32
   - name: status
     doc: Status of the vehicle at the time of the location update
-    type: string32
+    type: string
 ```
 
 **Make sure to replace the `<DATA_ASSET_NAME_FROM_ABOVE>` with the `VehicleLocation` data asset name from the UI**
