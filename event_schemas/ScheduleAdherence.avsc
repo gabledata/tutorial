@@ -26,21 +26,25 @@
     {
       "name": "plannedArrivalTime",
       "type": "long",
+      "logicalType": "timestamp-millis",
       "doc": "Planned arrival time in milliseconds since epoch"
     },
     {
       "name": "actualArrivalTime",
       "type": "long",
+      "logicalType": "timestamp-millis",
       "doc": "Actual arrival time in milliseconds since epoch"
     },
     {
       "name": "plannedDepartureTime",
       "type": "long",
+      "logicalType": "timestamp-millis",
       "doc": "Planned departure time in milliseconds since epoch"
     },
     {
       "name": "actualDepartureTime",
       "type": "long",
+      "logicalType": "timestamp-millis",
       "doc": "Actual departure time in milliseconds since epoch"
     },
     {

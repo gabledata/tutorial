@@ -2,10 +2,12 @@ syntax = "proto2";
 
 package transit;
 
+import "google/protobuf/timestamp.proto";
+
 message PassengerBoardingAlightingEvent {
   required string stopId = 1;
   required string vehicleId = 2;
-  required int64 timestamp = 3;
-  required int32 passengersBoarding = 4;
-  required int32 passengersAlighting = 5;
+  required google.protobuf.Timestamp timestamp = 3;
+  required uint32 passengersBoarding = 4;
+  required uint32 passengersAlighting = 5;
 }
