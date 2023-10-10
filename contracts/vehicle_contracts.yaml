@@ -8,10 +8,10 @@ owner: chadgable@gable.ai
 schema:
   - name: agencyId
     doc: The ID of the transit agency that operates this route.
-    type: string
+    type: int
   - name: vehicleId
     doc: The identifier of the specific vehicle
-    type: string
+    type: int
   - name: routeId
     doc: The route ID the vehicle is driving, if applicable
     type: string
