@@ -1,5 +1,5 @@
 id: 6b7f4f6c-324c-4a26-9114-eefdee49d5c9
-dataAssetResourceName: VehicleLocationEvent
+dataAssetResourceName: Transit.VehicleLocationEvent
 spec-version: 0.1.0
 name: VehicleLocationEvent
 namespace: Transit
