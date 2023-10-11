@@ -5,8 +5,8 @@ package transit;
 import "google/protobuf/timestamp.proto";
 
 message VehicleLocationEvent {
-  required string agencyId = 1;
-  required string vehicleId = 2;
+  required float agencyId = 1;
+  required float vehicleId = 2;
   required google.protobuf.Timestamp timestamp = 3;
   required float latitude = 4;
   required float longitude = 5;
