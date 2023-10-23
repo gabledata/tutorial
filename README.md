@@ -6,7 +6,7 @@ Welcome to the tutorial for Gable! In this tutorial, you will:
 - Validate and publish a new data contract
 - Attempt to make a breaking change to a data asset under contract
 
-This tutorial utilizes Github Actions to validate & publish data contracts, register data assets, and detect contract violations, all using the Gable platform. If you would like to run a similar tutorial using just the CLI, you can check out the [CLI tutorial](./docs/cli.md).
+This tutorial utilizes Github Actions to validate & publish data contracts, register data assets, and detect contract violations all using the Gable platform. If you would like to run a similar tutorial using just the CLI, you can check out the [CLI tutorial](./docs/cli.md).
 
 ## Step 1: Set up a forked tutorial repository
 

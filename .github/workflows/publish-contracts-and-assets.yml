@@ -87,30 +87,30 @@ jobs:
         working-directory: ./db_migrations
         run: poetry run alembic upgrade head
         shell: bash
-      # - name: Register Protobuf Data Assets
-      #   uses: gabledata/cicd/github-actions/register-data-assets@latest
-      #   with:
-      #       # Provide API key and endpoint secrets
-      #       gable-api-key: ${{secrets.GABLE_API_KEY}}
-      #       gable-api-endpoint: ${{secrets.GABLE_API_ENDPOINT}}
-      #       # List of paths to Protobuf files that should be checked with support for glob syntax. 
-      #       # Can either be specified as a space separated list ('event1.proto event2.proto'), or 
-      #       # a multiline string
-      #       data-asset-options: |
-      #         --source-type protobuf \
-      #         --files ./event_schemas/*.proto
-      # - name: Register Avro Data Assets
-      #   uses: gabledata/cicd/github-actions/register-data-assets@latest
-      #   with:
-      #       # Provide API key and endpoint secrets
-      #       gable-api-key: ${{secrets.GABLE_API_KEY}}
-      #       gable-api-endpoint: ${{secrets.GABLE_API_ENDPOINT}}
-      #       # List of paths to Avro files that should be checked with support for glob syntax. 
-      #       # Can either be specified as a space separated list ('event1.proto event2.proto'), or 
-      #       # a multiline string
-      #       data-asset-options: |
-      #         --source-type avro \
-      #         --files ./event_schemas/*.avsc
+      - name: Register Protobuf Data Assets
+        uses: gabledata/cicd/github-actions/register-data-assets@latest
+        with:
+            # Provide API key and endpoint secrets
+            gable-api-key: ${{secrets.GABLE_API_KEY}}
+            gable-api-endpoint: ${{secrets.GABLE_API_ENDPOINT}}
+            # List of paths to Protobuf files that should be checked with support for glob syntax. 
+            # Can either be specified as a space separated list ('event1.proto event2.proto'), or 
+            # a multiline string
+            data-asset-options: |
+              --source-type protobuf \
+              --files ./event_schemas/*.proto
+      - name: Register Avro Data Assets
+        uses: gabledata/cicd/github-actions/register-data-assets@latest
+        with:
+            # Provide API key and endpoint secrets
+            gable-api-key: ${{secrets.GABLE_API_KEY}}
+            gable-api-endpoint: ${{secrets.GABLE_API_ENDPOINT}}
+            # List of paths to Avro files that should be checked with support for glob syntax. 
+            # Can either be specified as a space separated list ('event1.proto event2.proto'), or 
+            # a multiline string
+            data-asset-options: |
+              --source-type avro \
+              --files ./event_schemas/*.avsc
       - name: Register Postgres Data Assets
         uses: gabledata/cicd/github-actions/register-data-assets@latest
         with:

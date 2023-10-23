@@ -49,7 +49,7 @@ To establish an authenticated connection with Gable via the CLI, you need:
 - The API endpoint associated with your organization
 - An API key that corresponds to the endpoint
 
-You can find your API key by navigating to the `/settings` page of Gable. Under API Keys you can click `View` to reveal your API key.
+You can find your API key by navigating to the `Settings -> API Keys` page of Gable. Under API Keys you can click `View` to reveal your API key.
 
 ![Gable API Keys](../static/gable_settings_api_keys_page_example.png)
 
@@ -76,7 +76,7 @@ If everything is set up correctly, you should receive a success message confirmi
 
 ## Step 2: Registering Data Assets
 
-Included in this tutorial are two Protobuf files and one Avro file which we will register as data assets.
+Included in this tutorial are many different data assets including database tables and event schemas. For event schemas, there are two Protobuf files and one Avro file which we will register as data assets.
 
 1. First, register the two Protobuf files with the following command:
 
@@ -104,12 +104,52 @@ Included in this tutorial are two Protobuf files and one Avro file which we will
    gable data-asset list
    ```
 
-## Step 3: Publish the Data Contract
+## Step 3: Creating Your First Data Contract
+
+You are going to create a data contract for the `OrderCreated.proto` file, which represents an event triggered when an order is created. Writing a data contract involves creating a YAML file that declares the schema and semantics of the data following the data contract specification.
+
+Contracts are associated with a specific data asset. When you first registered the events in the above step, it created three data assets in Gable for `tutorial.OrderCreated`, `tutorial.OrderShipped`, `tutorial.PaymentProcessed`. You can navigate to the `Data Assets` page in the UI view a list of your organization's assets.
+
+![Gable Data Assets](../static/gable_data_asset_list.png)
+
+You can click on the data asset where you can view its details including the ID Gable uses for the asset. You can click on the clipboard next to the ID to copy it into the contract below.
+
+![Gable Data Asset Details](../static/gable_data_asset_detail.png)
+
+In the `contracts` directory of your local repository, create a file called `order_created.yaml`. Copy and paste the following into the contents of that file:
+
+```yaml
+id: 8bde2127-5831-4336-ad8c-00c1718225e9
+dataAssetResourceName: <DATA_ASSET_NAME_FROM_GABLE>
+spec-version: 0.1.0
+name: OrderCreated
+namespace: Tutorial
+doc: Details of items for an order. Each row represents a different customer order.
+owner: chadgable@gable.ai
+schema:
+  - name: order_id
+    doc: The ID of the order the item is associated with
+    type: int32
+  - name: user_id
+    doc: The ID of the user that placed the order
+    type: int32
+  - name: total_amount
+    doc: The total price of the order
+    type: decimal256
+```
+
+**Make sure to replace the `<DATA_ASSET_NAME_FROM_ABOVE>` with the `OrderCreated` data asset name from the UI.**
+
+![Gable Data Asset Resource Name](../static/gable_data_asset_detail_resource_name.png)
+
+This contract contains information on what data the contract applies to, who owns the contract, as well as the minimum expected schema for the data from the `OrderCreated` event.
+
+## Step 4: Publishing the Data Contract
 
 1. Before you register the data contract in Gable's platform, you first want to validate that the data contract is syntactically correct. Run:
 
    ```bash
-   gable contract validate ./contracts/*.yaml
+   gable contract validate ./contracts/order_created.yaml
    ```
 
    This command will validate any files with a `yaml` extension in the `contracts` directory to confirm they are valid data contracts.
@@ -117,7 +157,7 @@ Included in this tutorial are two Protobuf files and one Avro file which we will
 2. To publish the data contract with Gable CLI, run:
 
    ```bash
-   gable contract publish ./contracts/*.yaml
+   gable contract publish ./contracts/order_created.yaml
    ```
 
    This command will publish any files with a `yaml` extension in the `contracts` directory to the Gable platform. This command is idempotent so running it multiple times will not duplicate data contracts. It will only register new versions of the data contract if there are changes.
@@ -137,16 +177,16 @@ The last step is to ensure
        --source-type protobuf --files ./event_schemas/*.proto
    ```
 
-   The CLI will surface a warning for any data assets not under contract. For any data assets under contract, in this case `VehicleLocation.proto`, it should return a success message that the data asset is not in violation of its contract.
+   The CLI will surface a warning for any data assets not under contract. For any data assets under contract, in this case `OrderCreated.proto`, it should return a success message that the data asset is not in violation of its contract.
 
-2. Confirm that the Avro file is also in complaince by running:
+2. Confirm that the Avro file is also in compliance by running:
 
    ```bash
    gable data-asset check \
        --source-type avro --files ./event_schemas/*.avsc
    ```
 
-3. Modify the `VehicleLocation.proto` file by changing the `status` column to `vehicleStatus`. This renames a field that is under the data contract and will result in a violation of the contract.
+3. Modify the `OrderCreated.proto` file by changing the `total_amount` column to `order_amount`. This renames a field that is under the data contract and will result in a violation of the contract.
 
 4. Rerun the Protobuf check
 
@@ -158,4 +198,4 @@ The last step is to ensure
    As expected, the data asset is failing the check because it is in violation of the contract!
 
 
-Congratulations for creating your first data contracts! Be sure to check out more of [Gable's documentation](https://docs.gable.ai) for more information on our platform!
+Congratulations for creating your first data contracts! Be sure to check out more of Gable's documentation by clicking the `Docs` button in the UI for more information on our platform!
