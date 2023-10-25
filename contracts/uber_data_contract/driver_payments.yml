@@ -1,0 +1,21 @@
+spec-version: 0.0.1
+name: DriverPayments
+namespace: UberContracts
+dataAssetResourceName: protobuf://git@github.com:MooveAfrica/data-de-gable-data-contracts/event_schemas/UberDriverPayments.proto:DriverPayments
+doc: Contract representing the Driver Payments report type retrieved from Uber system
+owner: vitalik.badion@moove.io
+schema:
+  - name: org_id
+    doc: The Fleet / organization id
+    type: string32
+  - name: driveruuid
+    doc: Unique id for the driver
+    type: string32
+  - name: totalearnings
+    doc:  Total driver earnings
+    type: union
+    types: ['null', 'float32']
+    default: 'null'
+  - name: refunds
+    doc: Refunds performed by driver
+    type: float32
