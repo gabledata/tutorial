@@ -39,7 +39,7 @@ In order to connect the Github Actions to Gable, you need:
    - Sandbox: `https://api-sandbox.<organization>.gable.ai/`
 - An API key that corresponds to the endpoint
 
-You can find your API key by navigating to the `/settings` page of Gable. Under API Keys you can click `View` to reveal your API key.
+You can find your API key by navigating to the `Settings -> API Keys` page of Gable. Under API Keys you can click `View` to reveal your API key.
 
 ![Gable API Keys](./static/gable_settings_api_keys_page_example.png)
 
@@ -69,13 +69,13 @@ git commit --allow-empty -m "Run workflow"
 git push
 ```
 
-Once the workflow completes, you should be able to see the `ScheduleAdherenceEvent` contract in the Gable UI.
+Once the workflow completes, you should be able to see the `Orders` contract in the Gable UI.
 
 Congratulations! You've set up your tutorial repository and are ready to try out Gable's platform!
 
 ## Step 2: Creating Your First Data Contract
 
-The tutorial repository includes three data asset files for a fake public transit agency. The data assets are two Protobuf files and one Avro file which represent different events for the public transit agency.
+The tutorial repository includes many different data assets for a generic e-commerce company. It includes database tables and event schemas. For this tutorial, we are going to create a contract on the `order_details` database table.
 
 ### Create a new branch to add the contract
 
@@ -94,9 +94,9 @@ Great! Now you can start writing the contract!
 
 ### Write the data contract
 
-You are going to create a data contract for the `VehicleLocation.proto` file, which represents a location and status tracking event for a vehicle in the transit agency. Writing a data contract involves creating a YAML file that declares the schema and semantics of the data following the [data contract specification](https://docs.gable.ai/data_contracts/what_are_data_contracts/data_contract_spec).
+You are going to create a data contract for the `order_details` table of the database, which represents the individual items included in a customer order. Writing a data contract involves creating a YAML file that declares the schema and semantics of the data following the data contract specification.
 
-Contracts are associated with a specific data asset. When you first enabled Github Actions, it created three data assets in Gable for `PassengerBoardingAlightingEvent`, `ScheduleAdherenceEvent`, `VehicleLocationEvent`. You can navigate to the `Data Assets` page to view a list of your organization's assets.
+Contracts are associated with a specific data asset. When you first enabled Github Actions, it created several data assets for database tables and event schemas. You can navigate to the `Data Assets` page to view a list of your organization's assets.
 
 ![Gable Data Assets](./static/gable_data_asset_list.png)
 
@@ -104,44 +104,37 @@ You can click on the data asset where you can view its details including the ID 
 
 ![Gable Data Asset Details](./static/gable_data_asset_detail.png)
 
-In the `contracts` directory of your local repository, create a file called `vehicle_location.yaml`. Copy and paste the following into the contents of that file:
+In the `contracts` directory of your local repository, create a file called `order_details.yaml`. **NOTE: The CLI can upload both `.yaml` and `.yml` files but the tutorial is set up to only upload `.yaml` files. Please ensure that the file extension is `.yaml` for the purposes of this tutorial**.
+
+Copy and paste the following into the contents of `order_details.yaml`:
 
 ```yaml
-id: 6b7f4f6c-324c-4a26-9114-eefdee49d5c9
-dataAssetResourceName: <DATA_ASSET_NAME_FROM_GABLE>
+id: 7b7eabe6-a52a-4e19-8bf3-9015eadbbed0
+dataAssetResourceName: postgres://prod.store.com:5432:tutorial.public.order_details
 spec-version: 0.1.0
-name: VehicleLocationEvent
-namespace: Transit
-doc: Real-time location and status of a transit vehicle
+name: OrderDetails
+namespace: Tutorial
+doc: Details of items for an order. Each row represents the different items that were part of an order including their quantity and price.
 owner: chadgable@gable.ai
 schema:
-  - name: agencyId
-    doc: The ID of the transit agency that operates this route.
-    type: string
-  - name: vehicleId
-    doc: The identifier of the specific vehicle
-    type: string
-  - name: routeId
-    doc: The route ID the vehicle is driving, if applicable
-    type: string
-    optional: true
-  - name: timestamp
-    doc: Timestamp of the vehicle location event
-    type: timestamp64
-  - name: latitude
-    doc: The latitude of the vehicle location
-    type: float32
-  - name: longitude
-    doc: The longitude of the vehicle location
-    type: float32
-  - name: status
-    doc: Status of the vehicle at the time of the location update
-    type: string
+  - name: order_id
+    doc: The identifier of the order the item is associated with
+    type: int32
+  - name: product_id
+    doc: The identifier of the product that was ordered
+    type: int32
+  - name: quantity
+    doc: The quantity of the product in the order
+    type: int32
+  - name: total_price
+    doc: The total price of the item in the order
+    type: decimal256
+  - name: vendor_id
+    doc: The identifier of the vendor that the product was ordered from
+    type: int32
 ```
 
-**Make sure to replace the `<DATA_ASSET_NAME_FROM_ABOVE>` with the `VehicleLocation` data asset name from the UI**
-
-This contract contains information on what data the contract applies to, who owns the contract, as well as the minimum expected schema for the data from the `VehicleLocationEvent`.
+This contract contains information on what data the contract applies to, who owns the contract, as well as the minimum expected schema for the data from the `order_details` table.
 
 ### Push Your Changes to Github
 
@@ -149,7 +142,7 @@ Now that you have created the contract, it is time to commit the change to the r
 
 ```bash
 git add .
-git commit -m "Added vehicle location data contract"
+git commit -m "Added order details data contract"
 git push origin first_contract
 ```
 
@@ -167,7 +160,7 @@ To create the Pull Request:
 3. Click the "New Pull Request" button
 4. In the "base" dropdown, select the `main` branch
 5. In the "compare" dropdown, select the `first_contract` branch that contains your new data contract
-6. In the "Title" field, add `New VehicleLocationEvent Data Contract`
+6. In the "Title" field, add `New ORder Details Data Contract`
 7. In the "Leave a comment" field, add the following:
 
    ```
