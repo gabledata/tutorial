@@ -46,7 +46,9 @@ pip install gable
 
 To establish an authenticated connection with Gable via the CLI, you need:
 
-- The API endpoint associated with your organization
+- The API endpoint associated with your organization, in the format:
+   - Production: `https://api.<organization>.gable.ai/`
+   - Sandbox: `https://api-sandbox.<organization>.gable.ai/`
 - An API key that corresponds to the endpoint
 
 You can find your API key by navigating to the `Settings -> API Keys` page of Gable. Under API Keys you can click `View` to reveal your API key.
@@ -110,7 +112,7 @@ You are going to create a data contract for the `OrderCreated.proto` file, which
 
 Contracts are associated with a specific data asset. When you first registered the events in the above step, it created three data assets in Gable for `tutorial.OrderCreated`, `tutorial.OrderShipped`, `tutorial.PaymentProcessed`. You can navigate to the `Data Assets` page in the UI view a list of your organization's assets.
 
-![Gable Data Assets](../static/gable_data_asset_list.png)
+![Gable Data Assets](../static/gable_data_asset_list_event_schemas.png)
 
 You can click on the data asset where you can view its details including the ID Gable uses for the asset. You can click on the clipboard next to the ID to copy it into the contract below.
 
