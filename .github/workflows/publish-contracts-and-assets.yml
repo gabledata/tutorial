@@ -122,11 +122,11 @@ jobs:
             # a multiline string
             data-asset-options: |
               --source-type postgres \
-              -h prod.store.com \
-              -p 5432 \
+              --host prod.store.com \
+              --port 5432 \
               --db tutorial \
-              -s public \
-              -ph 0.0.0.0 \
-              -pp 5432 \
-              -pu postgres \
-              -ppw postgres
+              --schema public \
+              --proxy-host 0.0.0.0 \
+              --proxy-port 5432 \
+              --proxy-user postgres \
+              --proxy-password postgres
