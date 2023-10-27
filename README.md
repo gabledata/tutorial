@@ -162,7 +162,7 @@ To create the Pull Request:
 3. Click the "New Pull Request" button
 4. In the "base" dropdown, select the `main` branch
 5. In the "compare" dropdown, select the `first_contract` branch that contains your new data contract
-6. In the "Title" field, add `New ORder Details Data Contract`
+6. In the "Title" field, add `New Order Details Data Contract`
 7. In the "Leave a comment" field, add the following:
 
    ```
