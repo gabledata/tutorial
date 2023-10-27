@@ -16,7 +16,8 @@ jobs:
       # By default, the Gable CLI will exit with a non-zero exit code if no contracts are found when calling the
       # validate or publish command. For this tutorial, there won't be any contracts in the repo to start, so we
       # need this extra step to check if we should skip validation
-      - shell: bash
+      - name: Check if Contracts Exist
+        shell: bash
         run: |
           set +e
           sh -c "ls ./contracts/*.yaml"
@@ -41,7 +42,37 @@ jobs:
   check-data-assets-against-contracts:
     runs-on: ubuntu-latest
     name: 'Check Data Assets Against Contracts'
+    services:
+      postgres:
+        image: postgres:14
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: tutorial
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
     steps:
+      - name: Check out repository code
+        uses: actions/checkout@v3
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+            python-version: 3.10.11
+      - name: Install Poetry
+        run: curl -sSL https://install.python-poetry.org | python3 -
+        shell: bash
+      - name: Install dependencies
+        run: poetry install
+        shell: bash
+      - name: Run migrations from db_migraations directory
+        working-directory: ./db_migrations
+        run: poetry run alembic upgrade head
+        shell: bash
       - name: Check Protobuf Data Assets
         uses: gabledata/cicd/github-actions/check-data-assets@latest
         with:
@@ -66,3 +97,24 @@ jobs:
             data-asset-options: |
               --source-type avro \
               --files ./event_schemas/*.avsc
+      - name: Check Postgres Data Assets
+        uses: gabledata/cicd/github-actions/check-data-assets@latest
+        with:
+            # Provide API key secret, and endpoint variable created in previous steps
+            gable-api-key: ${{secrets.GABLE_API_KEY}}
+            gable-api-endpoint: ${{secrets.GABLE_API_ENDPOINT}}
+            # List of paths to Avro files that should be checked with support for glob syntax. 
+            # Can either be specified as a space separated list ('event1.proto event2.proto'), or 
+            # a multiline string
+            data-asset-options: |
+              --source-type postgres \
+              --host prod.store.com \
+              --port 5432 \
+              --db tutorial \
+              --schema public \
+              --proxy-host localhost \
+              --proxy-port 5432 \
+              --proxy-db tutorial \
+              --proxy-schema public \
+              --proxy-user postgres \
+              --proxy-password postgres

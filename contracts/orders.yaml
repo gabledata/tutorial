@@ -1,0 +1,20 @@
+id: 3e16c244-a2fb-4b54-a35d-b2d892db9251
+dataAssetResourceName: postgres://prod.store.com:5432:tutorial.public.orders
+spec-version: 0.1.0
+name: Orders
+namespace: Tutorial
+doc: Details of items for an order. Each row represents a different customer order.
+owner: chadgable@gable.ai
+schema:
+  - name: order_id
+    doc: The ID of the order the item is associated with
+    type: int32
+  - name: user_id
+    doc: The ID of the user that placed the order
+    type: int32
+  - name: total_amount
+    doc: The total price of the order
+    type: decimal256
+  - name: order_status
+    doc: The current of the order
+    type: string

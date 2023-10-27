@@ -1,0 +1,42 @@
+{
+  "type": "record",
+  "name": "PaymentProcessed",
+  "namespace": "tutorial",
+  "fields": [
+    {
+      "name": "payment_id",
+      "type": "string",
+      "doc": "Unique ID for the payment"
+    },
+    {
+      "name": "order_id",
+      "type": "string",
+      "doc": "Unique ID for the associated order"
+    },
+    {
+      "name": "user_id",
+      "type": "string",
+      "doc": "The user who made the payment"
+    },
+    {
+      "name": "total_amount",
+      "type": "float",
+      "doc": "The total amount of the payment in USD"
+    },
+    {
+      "name": "payment_method",
+      "type": "string",
+      "doc": "Method used for the payment"
+    },
+    {
+      "name": "payment_status",
+      "type": "string",
+      "doc": "Status of the payment"
+    },
+    {
+      "name": "payment_date",
+      "type": "string",
+      "doc": "Timestamp when the payment was processed"
+    }
+  ]
+}

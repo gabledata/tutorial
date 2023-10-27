@@ -1,0 +1,14 @@
+syntax = "proto2";
+
+package tutorial;
+
+import "google/protobuf/timestamp.proto";
+
+message OrderShipped {
+    required string order_id = 1;
+    required string user_id = 2;
+    required google.protobuf.Timestamp date_shipped = 3;
+    required google.protobuf.Timestamp estimated_arrival = 4;
+    optional string tracking_number = 5;
+    optional string shipping_provider = 6;
+}
