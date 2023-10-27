@@ -295,4 +295,4 @@ The Github Action will validate the changes against existing data contracts. It 
 
 ## Further Reading
 
-Congratulations on creating your first data contract and validating data asset changes! Be sure to check out more of [Gable's documentation](https://docs.gable.ai) for more information on our platform!
+Congratulations on creating your first data contract and validating data asset changes! Be sure to check out more of Gable's documentation for more information on our platform!
