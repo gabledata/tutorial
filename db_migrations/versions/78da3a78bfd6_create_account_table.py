@@ -65,7 +65,7 @@ def upgrade() -> None:
     op.create_table(
         "orders",
         sa.Column("order_id", sa.Integer, primary_key=True),
-        sa.Column("user_id", sa.Integer, sa.ForeignKey("users.user_id")),
+        sa.Column("user_id", sa.Integer, sa.ForeignKey("users.user_id"), nullable=False),
         sa.Column("order_details", JSONB),
         sa.Column("shipping_address", JSONB),
         sa.Column("total_amount", sa.Numeric(10, 2), nullable=False),

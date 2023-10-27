@@ -12,9 +12,6 @@ schema:
   - name: user_id
     doc: The ID of the user that placed the order
     type: int32
-  - name: quantity
-    doc: The quantity of the product in the order
-    type: int32
   - name: total_amount
     doc: The total price of the order
     type: decimal256
