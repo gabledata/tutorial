@@ -83,7 +83,7 @@ jobs:
       - name: Install dependencies
         run: poetry install
         shell: bash
-      - name: Run migrations from db_migraations directory
+      - name: Run migrations from db_migrations directory
         working-directory: ./db_migrations
         run: poetry run alembic upgrade head
         shell: bash
