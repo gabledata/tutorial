@@ -16,7 +16,8 @@ jobs:
       # By default, the Gable CLI will exit with a non-zero exit code if no contracts are found when calling the
       # validate or publish command. For this tutorial, there won't be any contracts in the repo to start, so we
       # need this extra step to check if we should skip validation
-      - shell: bash
+      - name: Check if Contracts Exist
+        shell: bash
         run: |
           set +e
           sh -c "ls ./contracts/*.yaml"
