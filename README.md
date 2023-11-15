@@ -56,8 +56,8 @@ The last setup step is to clone the forked repository to your local machine. Nav
 Now open a terminal and run:
 
 ```bash
-git clone COPIED_REPO_URL
-cd tutorial
+git clone <COPIED_REPO_URL>
+cd <FORKED_REPO_NAME>
 ```
 
 ### Trigger Data Asset Registration
