@@ -1,0 +1,23 @@
+id: 7b7eabe6-a52a-4e19-8bf3-9015eadbbed0
+dataAssetResourceName: postgres://prod.store.com:5432:tutorial.public.order_details
+spec-version: 0.1.0
+name: OrderDetails
+namespace: Tutorial
+doc: Details of items for an order. Each row represents the different items that were part of an order including their quantity and price.
+owner: chadgable@gable.ai
+schema:
+  - name: order_id
+    doc: The identifier of the order the item is associated with
+    type: int32
+  - name: product_id
+    doc: The identifier of the product that was ordered
+    type: int32
+  - name: quantity
+    doc: The quantity of the product in the order
+    type: int32
+  - name: total_price
+    doc: The total price of the item in the order
+    type: decimal256
+  - name: vendor_id
+    doc: The identifier of the vendor that the product was ordered from
+    type: int32
