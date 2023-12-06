@@ -130,3 +130,8 @@ jobs:
               --proxy-port 5432 \
               --proxy-user postgres \
               --proxy-password postgres
+      - name: which endpoint are we hitting?
+        shell: bash
+        run: |
+          echo ${{secrets.GABLE_API_ENDPOINT}}
+          gable debug env | sed 's/\./-/g'
