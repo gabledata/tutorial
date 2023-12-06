@@ -14,10 +14,10 @@ schema:
     type: int32
   - name: quantity
     doc: The quantity of the product in the order
-    type: int32
+    type: int64
   - name: total_price
     doc: The total price of the item in the order
-    type: decimal256
+    type: int32
   - name: vendor_id
     doc: The identifier of the vendor that the product was ordered from
-    type: int32
+    type: decimal256
