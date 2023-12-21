@@ -34,12 +34,10 @@ Click on the "I understand my workflows, go ahead and enable them" button. This 
 
 In order to connect the Github Actions to Gable, you need:
 
-- The API endpoint associated with your organization, in the format:
-   - Production: `https://api.<organization>.gable.ai/`
-   - Sandbox: `https://api-sandbox.<organization>.gable.ai/`
+- The API endpoint associated with your organization
 - An API key that corresponds to the endpoint
 
-You can find your API key by navigating to the `Settings -> API Keys` page of Gable. Under API Keys you can click `View` to reveal your API key.
+You can find your API endpoint and key by navigating to the `Settings -> API Keys` page of Gable. Under API Keys you can click `View` to reveal your API key.
 
 ![Gable API Keys](./static/gable_settings_api_keys_page_example.png)
 
