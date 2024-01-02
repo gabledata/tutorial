@@ -159,10 +159,11 @@ To create the Pull Request:
 1. Navigate to the main page of your forked tutorial repository in Github
 2. Click on the "Pull requests" tab near the top of the page
 3. Click the "New Pull Request" button
-4. In the "base" dropdown, select the `main` branch
-5. In the "compare" dropdown, select the `first_contract` branch that contains your new data contract
-6. In the "Title" field, add `New Order Details Data Contract`
-7. In the "Leave a comment" field, add the following:
+4. In the "base repository" dropdown, select your forked tutorial repository
+5. In the "base" dropdown, select the `main` branch
+6. In the "compare" dropdown, select the `first_contract` branch that contains your new data contract
+7. In the "Title" field, add `New Order Details Data Contract`
+8. In the "Leave a comment" field, add the following:
 
    ```
    Adds a new data contract for `order_details` table.
@@ -275,10 +276,11 @@ Now open a Pull Request for the proposed breaking change:
 1. Navigate to the main page of your forked tutorial repository in Github
 2. Click on the "Pull requests" tab near the top of the page
 3. Click the "New Pull Request" button
-4. In the "base" dropdown, select the `main` branch
-5. In the "compare" dropdown, select the `breaking_data_change` branch that contains the breaking data change
-6. In the "Title" field, add `Update order details table`
-7. In the "Leave a comment" field, add the following:
+4. In the "base repository" dropdown, select your forked tutorial repository
+5. In the "base" dropdown, select the `main` branch
+6. In the "compare" dropdown, select the `breaking_data_change` branch that contains the breaking data change
+7. In the "Title" field, add `Update order details table`
+8. In the "Leave a comment" field, add the following:
 
    ```
    Make updates to the order details table
