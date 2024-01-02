@@ -54,7 +54,7 @@ The last setup step is to clone the forked repository to your local machine. Nav
 Now open a terminal and run:
 
 ```bash
-git clone <COPIED_REPO_URL>
+git clone <COPIED_REPO_URL> --single-branch
 cd <FORKED_REPO_NAME>
 ```
 
@@ -69,6 +69,7 @@ git commit --allow-empty -m "Run workflow"
 git push
 ```
 
+The workflow will start after you have created a Pull Request using the GitHub web interface. 
 Once the workflow completes, you should be able to see the `Orders` contract in the Gable UI.
 
 Congratulations! You've set up your tutorial repository and are ready to try out Gable's platform!
