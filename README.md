@@ -137,6 +137,10 @@ schema:
 
 This contract contains information on what data the contract applies to, who owns the contract, as well as the minimum expected schema for the data from the `order_details` table.
 
+Remark: You can generate a Data Contract template for a Data Asset using the Gable UI.
+
+![Genarate Contract from Data Asset](./static/gable_data_asset_generate_contract.png)
+
 ### Push Your Changes to Github
 
 Now that you have created the contract, it is time to commit the change to the repository. To stage and commit your changes, run:
