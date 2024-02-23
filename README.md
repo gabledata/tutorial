@@ -205,7 +205,7 @@ git checkout -b breaking_data_change
 
 We are going to add a new migration file for our database to attempt to break the contract.
 
-Create a new file called `7a341d712aa5_order_detail_changes.py` in the [migrations folder](./db_migrations/versions/). Paste the following contents into the new `7a341d712aa5_order_detail_changes.py` file:
+Create a new file called `7a341d712aa5_order_detail_changes.py` in the `./db_migrations/versions/` [folder](./db_migrations/versions/). Paste the following contents into the new `7a341d712aa5_order_detail_changes.py` file:
 
 ```python
 """order_detail changes
