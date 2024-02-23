@@ -101,7 +101,7 @@ Contracts are associated with a specific data asset. When you first enabled Gith
 
 ![Gable Data Assets](./static/gable_data_asset_list.png)
 
-You can click on the data asset where you can view its details including the ID Gable uses for the asset. You can click on the clipboard next to the ID to copy it into the contract below.
+You can click on the data asset where you can view its details including the ID Gable uses for the asset. You can click on the clipboard next to the ID to copy it. For this tutorial, we are using the `tutorial.public.order_details` data asset.
 
 ![Gable Data Asset Details](./static/gable_data_asset_detail.png)
 
@@ -147,7 +147,7 @@ Now that you have created the contract, it is time to commit the change to the r
 
 ```bash
 git add .
-git commit -m "Added order details data contract"
+git commit -m "Add order details data contract"
 git push origin first_contract
 ```
 
@@ -166,7 +166,7 @@ To create the Pull Request:
 4. In the "base repository" dropdown, select your forked tutorial repository
 5. In the "base" dropdown, select the `main` branch
 6. In the "compare" dropdown, select the `first_contract` branch that contains your new data contract
-7. In the "Title" field, add `New Order Details Data Contract`
+7. In the "Title" field, add `Add order details data contract`
 8. In the "Leave a comment" field, add the following:
 
    ```
