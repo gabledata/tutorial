@@ -1,0 +1,12 @@
+version: '3'
+services:
+  hive:
+    image: apache/hive:4.0.0-beta-1
+    container_name: hive
+    ports:
+      - "10000:10000"
+    environment:
+      - SERVICE_NAME=hiveserver2
+    volumes:
+      - ./:/opt/hive-scripts/
+    entrypoint: /opt/hive-scripts/init-hive.sh
