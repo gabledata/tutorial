@@ -29,16 +29,11 @@ def run_job(spark, final_output_table):
   # Write the joined data to the final output table
   joined_df.write.mode("overwrite").saveAsTable(final_output_table)
 
-  joined_df.createOrReplaceTempView("joined_temp")
-  commission_rate_metrics_df = spark.sql("""
-    SELECT 
-      booking_date,
-      avg(commission_rate) AS "avg_commission_rate",
-      max(commission_rate) AS "max_commission_rate",
-      min(commission_rate) AS "min_commission_rate"
-    FROM
-      joined_temp
-  """)
+  commission_rate_metrics_df = joined_df.groupBy("booking_date").agg(
+    F.avg("commission_rate").alias("avg_commission_rate"),
+    F.max("commission_rate").alias("max_commission_rate"),
+    F.min("commission_rate").alias("min_commission_rate")
+  )
 
   # Merge into existing metrics table
   commission_rate_metrics_df.createOrReplaceTempView("commission_rate_metrics_temp")
