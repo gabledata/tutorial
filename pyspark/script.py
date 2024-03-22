@@ -17,8 +17,6 @@ def run_job(spark, final_output_table):
     SELECT
       timestamp(date_trunc(b.confirm_time, 'DD')) AS "booking_date",
       b.earning_adjustment_commission_rate AS "commission_rate",
-      b.receipt_payment_type AS "payment_type",
-      b.reward_id AS "reward_id",
       c.*,
     FROM
       bookings_30_days b
