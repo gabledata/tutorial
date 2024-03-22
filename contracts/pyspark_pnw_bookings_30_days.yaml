@@ -1,0 +1,44 @@
+id: dbc5b4b8-3e0f-4b8a-94d0-601a7033d16c
+dataAssetResourceName: pyspark://git@github.com:gabledata/tutorial:/home/runner/work/tutorial/tutorial/pyspark:job.py:pnw_bookings_30_days
+doc: "Bookings in the Pacific Northwest over the last 30 days."
+name: pnw_bookings_30_days
+namespace: "bookings"
+owner: "engineers@gable.ai"
+schema:
+  - name: booking_date
+    type: string
+    logical: org.iso.8601.DateTime
+    doc: "Date of the booking"
+  - name: commission_rate
+    type: float
+    bits: 64
+    doc: "Commission rate for the booking"
+  - name: payment_type
+    type: string
+    doc: "Payment type for the booking"
+  - name: reward_id
+    type: int
+    bits: 64
+    doc: "Reward ID for the booking"
+  - name: city_id
+    type: string
+    doc: "City ID for the booking"
+  - name: city_name
+    type: string
+    doc: "City name for the booking"
+  - name: city_code
+    type: string
+    doc: "City code for the booking"
+  - name: country_id
+    type: string
+    doc: "Country ID for the booking"
+  - name: region
+    type: string
+    doc: "Region for the booking"
+  - name: created_at
+    type: string
+    logical: org.iso.8601.DateTime
+    doc: "Creation date of the booking in our system"
+  - name: enable_tip
+    type: bool
+    doc: "Whether tip is enabled for the booking"
