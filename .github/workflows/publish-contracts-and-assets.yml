@@ -5,6 +5,7 @@ on:
   push:
     branches:
       - 'main'
+      - 'pyspark_cicd'
 permissions:
   # Required to checkout the contracts from the repo
   contents: read
@@ -34,8 +35,8 @@ jobs:
         uses: gabledata/cicd/github-actions/validate-contracts@latest
         with:
           # Provide API key and endpoint secrets
-          gable-api-key: ${{secrets.GABLE_API_KEY_UNSTABLE}}
-          gable-api-endpoint: ${{secrets.GABLE_API_ENDPOINT_UNSTABLE}}
+          gable-api-key: ${{secrets.GABLE_API_KEY_UNSTABLE_SANDBOX}}
+          gable-api-endpoint: ${{secrets.GABLE_API_ENDPOINT_UNSTABLE_SANDBOX}}
           # List of paths to contract files that should be validated, with support for glob syntax.
           # Can either be specified as a space separated list ('contract1.yml contract2.yml'), or
           # a multiline string
@@ -46,8 +47,8 @@ jobs:
         uses: gabledata/cicd/github-actions/publish-contracts@latest
         with:
           # Provide API key and endpoint secrets
-          gable-api-key: ${{secrets.GABLE_API_KEY_UNSTABLE}}
-          gable-api-endpoint: ${{secrets.GABLE_API_ENDPOINT_UNSTABLE}}
+          gable-api-key: ${{secrets.GABLE_API_KEY_UNSTABLE_SANDBOX}}
+          gable-api-endpoint: ${{secrets.GABLE_API_ENDPOINT_UNSTABLE_SANDBOX}}
           # List of paths to contract files that should be published, with support for glob syntax.
           # Can either be specified as a space separated list ('contract1.yml contract2.yml'), or
           # a multiline string
@@ -81,18 +82,42 @@ jobs:
         run: curl -sSL https://install.python-poetry.org | python3 -
         shell: bash
       - name: Install dependencies
-        run: poetry install
         shell: bash
+        run: |
+          # Install root level dependencies
+          poetry install
+          # Create a virtual environment for the PySpark project, install dependencies
+          python3 -m venv "pyspark/.venv"
+          pyspark/.venv/bin/pip install -r pyspark/requirements.txt
+          ls -la pyspark/.venv/bin
+
       - name: Run migrations from db_migrations directory
         working-directory: ./db_migrations
         run: poetry run alembic upgrade head
         shell: bash
+
+      - name: Register PySpark Data Assets
+        uses: gabledata/cicd/github-actions/register-data-assets@python_path
+        with:
+            # Provide API key and endpoint secrets
+            gable-api-key: ${{secrets.GABLE_API_KEY_UNSTABLE_SANDBOX}}
+            gable-api-endpoint: ${{secrets.GABLE_API_ENDPOINT_UNSTABLE_SANDBOX}}
+            allow-gable-pre-release: true
+            python-path: pyspark/.venv/bin/python
+            # List of paths to Protobuf files that should be checked with support for glob syntax. 
+            # Can either be specified as a space separated list ('event1.proto event2.proto'), or 
+            # a multiline string
+            data-asset-options: |
+              --source-type pyspark \
+              --project-root ${{ github.workspace }}/pyspark \
+              --csv-schema-file ${{ github.workspace }}/pyspark/schemas.csv \
+              --spark-job-entrypoint 'job.py --final_output_table pnw_bookings_30_days' --debug
       - name: Register Protobuf Data Assets
         uses: gabledata/cicd/github-actions/register-data-assets@latest
         with:
             # Provide API key and endpoint secrets
-            gable-api-key: ${{secrets.GABLE_API_KEY_UNSTABLE}}
-            gable-api-endpoint: ${{secrets.GABLE_API_ENDPOINT_UNSTABLE}}
+            gable-api-key: ${{secrets.GABLE_API_KEY_UNSTABLE_SANDBOX}}
+            gable-api-endpoint: ${{secrets.GABLE_API_ENDPOINT_UNSTABLE_SANDBOX}}
             # List of paths to Protobuf files that should be checked with support for glob syntax. 
             # Can either be specified as a space separated list ('event1.proto event2.proto'), or 
             # a multiline string
@@ -103,8 +128,8 @@ jobs:
         uses: gabledata/cicd/github-actions/register-data-assets@latest
         with:
             # Provide API key and endpoint secrets
-            gable-api-key: ${{secrets.GABLE_API_KEY_UNSTABLE}}
-            gable-api-endpoint: ${{secrets.GABLE_API_ENDPOINT_UNSTABLE}}
+            gable-api-key: ${{secrets.GABLE_API_KEY_UNSTABLE_SANDBOX}}
+            gable-api-endpoint: ${{secrets.GABLE_API_ENDPOINT_UNSTABLE_SANDBOX}}
             # List of paths to Avro files that should be checked with support for glob syntax. 
             # Can either be specified as a space separated list ('event1.proto event2.proto'), or 
             # a multiline string
@@ -115,8 +140,8 @@ jobs:
         uses: gabledata/cicd/github-actions/register-data-assets@latest
         with:
             # Provide API key and endpoint secrets
-            gable-api-key: ${{secrets.GABLE_API_KEY_UNSTABLE}}
-            gable-api-endpoint: ${{secrets.GABLE_API_ENDPOINT_UNSTABLE}}
+            gable-api-key: ${{secrets.GABLE_API_KEY_UNSTABLE_SANDBOX}}
+            gable-api-endpoint: ${{secrets.GABLE_API_ENDPOINT_UNSTABLE_SANDBOX}}
             # List of paths to Avro files that should be checked with support for glob syntax. 
             # Can either be specified as a space separated list ('event1.proto event2.proto'), or 
             # a multiline string
