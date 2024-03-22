@@ -1,0 +1,6 @@
+
+.idea
+.gradle
+server/node_modules/
+.venv
+node_modules

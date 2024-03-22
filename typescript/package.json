@@ -1,0 +1,7 @@
+{
+  "name": "ts-sample",
+  "workspaces": [
+    "app",
+    "server"
+  ]
+}
