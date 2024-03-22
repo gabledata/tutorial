@@ -74,7 +74,7 @@ jobs:
         run: poetry run alembic upgrade head
         shell: bash
       - name: Check Protobuf Data Assets
-        uses: gabledata/cicd/github-actions/check-data-assets@latest
+        uses: gabledata/cicd/github-actions/check-data-assets@77ddb70e67717003dcce5d0ad796c73b93b22d43
         with:
             # Provide API key secret, and endpoint variable created in previous steps
             gable-api-key: ${{secrets.GABLE_API_KEY}}
@@ -86,7 +86,7 @@ jobs:
               --source-type protobuf \
               --files ./event_schemas/*.proto
       - name: Check Avro Data Assets
-        uses: gabledata/cicd/github-actions/check-data-assets@latest
+        uses: gabledata/cicd/github-actions/check-data-assets@77ddb70e67717003dcce5d0ad796c73b93b22d43
         with:
             # Provide API key secret, and endpoint variable created in previous steps
             gable-api-key: ${{secrets.GABLE_API_KEY}}
@@ -98,7 +98,7 @@ jobs:
               --source-type avro \
               --files ./event_schemas/*.avsc
       - name: Check Postgres Data Assets
-        uses: gabledata/cicd/github-actions/check-data-assets@latest
+        uses: gabledata/cicd/github-actions/check-data-assets@77ddb70e67717003dcce5d0ad796c73b93b22d43
         with:
             # Provide API key secret, and endpoint variable created in previous steps
             gable-api-key: ${{secrets.GABLE_API_KEY}}
