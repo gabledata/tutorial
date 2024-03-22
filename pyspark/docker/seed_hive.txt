@@ -1,0 +1,79 @@
+CREATE TABLE IF NOT EXISTS area (
+  subcity_name STRING,
+  area_name STRING,
+  area_id STRING,
+  geohash STRING,
+  city_id STRING
+);
+
+CREATE TABLE IF NOT EXISTS city (
+  latitude DOUBLE,
+  windows_time_zone STRING,
+  territory STRING,
+  is_capital BOOLEAN,
+  city_code STRING,
+  region STRING,
+  longitude DOUBLE,
+  created_at TIMESTAMP,
+  city_name STRING,
+  city_id STRING,
+  updated_at TIMESTAMP,
+  country_id STRING,
+  parent_city_id STRING,
+  enable_tip BOOLEAN,
+  time_zone STRING
+);
+
+
+CREATE TABLE IF NOT EXISTS enterprise_metrics (
+  order_id STRING,
+  date_id STRING,
+  booking_code STRING,
+  booking_channel STRING,
+  last_group_id STRING,
+  array_enterprise_reward_id STRING,
+  product STRING
+);
+
+CREATE TABLE IF NOT EXISTS booking (
+  city_id STRING,
+  earning_adjustment_commission_rate DOUBLE,
+	booking_broadcast_time TIMESTAMP,
+	receipt_payment_type STRING,
+  confirm_time TIMESTAMP,
+  date_id STRING,
+  reward_id BIGINT
+);
+
+CREATE TABLE IF NOT EXISTS generic_metrics (
+driver_longitude DOUBLE,
+  payment_type_id STRING,
+  confirm_time TIMESTAMP,
+  ignored_candidates STRING,
+  enterprise_campaign_code STRING,
+  cancel_types_used STRING,
+  is_soft_allocated BOOLEAN,
+  ar_denominator STRING,
+  actual_distance_of_trip DOUBLE,
+  sender_type STRING,
+  cancellation_fees DOUBLE,
+  city_id STRING,
+  created_at_utc TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS orders (
+	merchant_order_id STRING,
+  total_cancels_for_order BIGINT,
+  pickup_time_to TIMESTAMP,
+  dropoff_longitude DOUBLE,
+  is_gpc BOOLEAN,
+  user_type STRING,
+  regular_delivery_provider STRING,
+  city_id STRING,
+  updated_at TIMESTAMP,
+  first_allocation_timestamp TIMESTAMP,
+  cancelled_time TIMESTAMP,
+  cancel_types_used STRING,
+  pending_dropoff_time TIMESTAMP,
+  cod_type STRING
+);
