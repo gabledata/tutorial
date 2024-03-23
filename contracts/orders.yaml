@@ -1,8 +1,8 @@
-id: 3e16c244-a2fb-4b54-a35d-b2d892db9251
+id: aaa6c244-a2fb-4b54-a35d-b2d892db9aaa
 dataAssetResourceName: postgres://prod.store.com:5432:tutorial.public.orders
 spec-version: 0.1.0
 name: Orders
-namespace: Tutorial
+namespace: AdrianDemo
 doc: Details of items for an order. Each row represents a different customer order.
 owner: chadgable@gable.ai
 schema:
