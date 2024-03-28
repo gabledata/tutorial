@@ -1,0 +1,45 @@
+id: 16a6daa7-6c17-43b3-bf54-90e11ebcc3f0
+dataAssetResourceName: pyspark://git@github.com:alexdemeo/tutorial:pyspark:job.py:pnw_bookings_30_days
+spec-version: 0.3.0
+doc: bookings for the last 30 days
+name: pnw_bookings_30_days
+namespace: Tutorial
+owner: chad@gable.ai
+schema:
+  - name: booking_date
+    type: string
+    logical: org.iso.8601.DateTime
+    doc: "booking date"
+  - name: commission_rate
+    type: float
+    bits: 64
+    doc: "commission rate"
+  - name: payment_type
+    type: string
+    doc: "payment type"
+  - name: reward_id
+    type: int
+    bits: 64
+    doc: "reward id" 
+  - name: city_id
+    type: string
+    doc: "city id" 
+  - name: city_name
+    type: string
+    doc: "city name" 
+  - name: city_code
+    type: string
+    doc: "city code" 
+  - name: country_id
+    type: string
+    doc: "country id" 
+  - name: region
+    type: string
+    doc: "region" 
+  - name: created_at
+    type: string
+    logical: org.iso.8601.DateTime
+    doc: "created at" 
+  - name: enable_tip
+    type: bool
+    doc: "enable tip" 
