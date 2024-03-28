@@ -1,3 +1,5 @@
 gable_tutorial
 __pycache__
 .venv
+.DS_Store
+typescript/node_modules
