@@ -1,0 +1,10 @@
+id: 605a22c0-1657-4cfa-aace-7e2db379898e
+dataAssetResourceName: typescript://git@github.com:gabledata/ts-sample:.:segment:Save for later
+doc: Asset for Save For Later event
+name: Save for later
+namespace: ts_sample
+owner: suzanne@gable.ai
+schema:
+  - name: productId
+    type: string
+    doc: "PLACEHOLDER: Add documentation"
