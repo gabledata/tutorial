@@ -118,3 +118,16 @@ jobs:
               --proxy-schema public \
               --proxy-user postgres \
               --proxy-password postgres
+      - name: Check pyspark
+        uses: gabledata/cicd/github-actions/check-data-assets@latest
+        with:
+            # Provide API key secret, and endpoint variable created in previous steps
+            gable-api-key: ${{secrets.GABLE_API_KEY}}
+            gable-api-endpoint: ${{secrets.GABLE_API_ENDPOINT}}
+            # List of paths to Avro files that should be checked with support for glob syntax. 
+            # Can either be specified as a space separated list ('event1.proto event2.proto'), or 
+            # a multiline string
+            data-asset-options: |
+              --project-root ../../pyspark \
+              --spark-job-entrypoint "job.py --final_output_table pnw_bookings_30_days" \
+              --csv-schema-file ../../pyspark/schemas.csv
