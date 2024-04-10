@@ -37,6 +37,11 @@
       "name": "payment_date",
       "type": "string",
       "doc": "Timestamp when the payment was processed"
+    },
+    {
+      "name": "cancellation_reason",
+      "type": "string",
+      "doc": "Reason payment was cancelled"
     }
   ]
 }
