@@ -42,6 +42,3 @@ schema:
     type: string
     optional: true
     doc: "Optional additional details about the product"
-  - name: sku
-    type: string
-    doc: "Stock Keeping Unit (SKU) for the product"
