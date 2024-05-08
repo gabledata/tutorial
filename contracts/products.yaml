@@ -1,0 +1,47 @@
+id: f931c755-3611-45b9-92e6-537f16baed81
+dataAssetResourceName: postgres://prod.store.com:5432:tutorial.public.products
+doc: "Products available in the store"
+name: products
+namespace: "AdrianDemo"
+owner: "engineers@gable.ai"
+schema:
+  - name: product_id
+    type: int32
+    doc: "Unique ID for the product in our system"
+  - name: product_name
+    type: string
+    doc: "Display name of the product in the store"
+  - name: description
+    type: string
+    optional: true
+    doc: "Optional description of the product displayed on the product page"
+  - name: price
+    type: bytes
+    logical: Decimal
+    precision: 10
+    scale: 2
+    bytes: 32
+    variable: false
+    doc: "Price of the product in USD"
+  - name: stock
+    type: int32
+    doc: "Number of units available in stock"
+  - name: vendor_id
+    type: int32
+    optional: true
+    doc: "ID of the vendor the product was purchased from"
+  - name: category_id
+    type: int32
+    optional: true
+    doc: "Product category ID"
+  - name: ratings_and_reviews
+    type: string
+    optional: true
+    doc: "Ratings and reviews text for the product"
+  - name: product_details
+    type: string
+    optional: true
+    doc: "Optional additional details about the product"
+  - name: sku
+    type: string
+    doc: "Stock Keeping Unit (SKU) for the product"
