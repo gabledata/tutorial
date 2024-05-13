@@ -29,7 +29,7 @@ jobs:
           fi
       - name: Validate Contracts
         if: ${{ env.SKIP_VALIDATION  != 'true' }}
-        uses: gabledata/cicd/github-actions/validate-contracts@latest
+        uses: gabledata/cicd/github-actions/validate-contracts@main
         with:
           # Provide API key secret, and endpoint variable created in previous steps
           gable-api-key: ${{secrets.STABLE_GABLE_API_KEY}}
@@ -74,7 +74,7 @@ jobs:
         run: poetry run alembic upgrade head
         shell: bash
       - name: Check Protobuf Data Assets
-        uses: gabledata/cicd/github-actions/check-data-assets@latest
+        uses: gabledata/cicd/github-actions/check-data-assets@main
         with:
             # Provide API key secret, and endpoint variable created in previous steps
             gable-api-key: ${{secrets.STABLE_GABLE_API_KEY}}
@@ -86,7 +86,7 @@ jobs:
               --source-type protobuf \
               --files ./event_schemas/*.proto
       - name: Check Avro Data Assets
-        uses: gabledata/cicd/github-actions/check-data-assets@latest
+        uses: gabledata/cicd/github-actions/check-data-assets@main
         with:
             # Provide API key secret, and endpoint variable created in previous steps
             gable-api-key: ${{secrets.STABLE_GABLE_API_KEY}}
@@ -97,8 +97,20 @@ jobs:
             data-asset-options: |
               --source-type avro \
               --files ./event_schemas/*.avsc
+      - name: Check PySpark Data Assets
+        uses: gabledata/cicd/github-actions/check-data-assets@main
+        with:
+            # Provide API key secret, and endpoint variable created in previous steps
+            gable-api-key: ${{secrets.STABLE_GABLE_API_KEY}}
+            gable-api-endpoint: ${{secrets.STABLE_GABLE_API_ENDPOINT}}
+            python-path: pyspark/.venv/bin/python
+            data-asset-options: |
+              --source-type pyspark \
+              --project-root pyspark \
+              --csv-schema-file pyspark/schemas.csv \
+              --spark-job-entrypoint 'job.py --final_output_table pnw_bookings_30_days' --debug
       - name: Check Postgres Data Assets
-        uses: gabledata/cicd/github-actions/check-data-assets@latest
+        uses: gabledata/cicd/github-actions/check-data-assets@main
         with:
             # Provide API key secret, and endpoint variable created in previous steps
             gable-api-key: ${{secrets.STABLE_GABLE_API_KEY}}

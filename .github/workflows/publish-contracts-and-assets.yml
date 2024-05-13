@@ -31,7 +31,7 @@ jobs:
           fi
       - name: Validate Contracts
         if: ${{ env.SKIP_VALIDATION  != 'true' }}
-        uses: gabledata/cicd/github-actions/validate-contracts@latest
+        uses: gabledata/cicd/github-actions/validate-contracts@main
         with:
           # Provide API key and endpoint secrets
           gable-api-key: ${{secrets.STABLE_GABLE_API_KEY}}
@@ -43,7 +43,7 @@ jobs:
             ./contracts/*.yaml
       - name: Publish Contracts
         if: ${{ env.SKIP_VALIDATION  != 'true' }}
-        uses: gabledata/cicd/github-actions/publish-contracts@latest
+        uses: gabledata/cicd/github-actions/publish-contracts@main
         with:
           # Provide API key and endpoint secrets
           gable-api-key: ${{secrets.STABLE_GABLE_API_KEY}}
@@ -81,14 +81,20 @@ jobs:
         run: curl -sSL https://install.python-poetry.org | python3 -
         shell: bash
       - name: Install dependencies
-        run: poetry install
         shell: bash
+        run: |
+          # Install root level dependencies
+          poetry install
+          # Create a virtual environment for the PySpark project, install dependencies
+          python3 -m venv "pyspark/.venv"
+          pyspark/.venv/bin/pip install -r pyspark/requirements.txt
+          ls -la pyspark/.venv/bin
       - name: Run migrations from db_migrations directory
         working-directory: ./db_migrations
         run: poetry run alembic upgrade head
         shell: bash
       - name: Register Protobuf Data Assets
-        uses: gabledata/cicd/github-actions/register-data-assets@latest
+        uses: gabledata/cicd/github-actions/register-data-assets@main
         with:
             # Provide API key and endpoint secrets
             gable-api-key: ${{secrets.STABLE_GABLE_API_KEY}}
@@ -100,7 +106,7 @@ jobs:
               --source-type protobuf \
               --files ./event_schemas/*.proto
       - name: Register Avro Data Assets
-        uses: gabledata/cicd/github-actions/register-data-assets@latest
+        uses: gabledata/cicd/github-actions/register-data-assets@main
         with:
             # Provide API key and endpoint secrets
             gable-api-key: ${{secrets.STABLE_GABLE_API_KEY}}
@@ -111,8 +117,20 @@ jobs:
             data-asset-options: |
               --source-type avro \
               --files ./event_schemas/*.avsc
+      - name: Register PySpark Data Assets
+        uses: gabledata/cicd/github-actions/register-data-assets@main
+        with:
+            # Provide API key and endpoint secrets
+            gable-api-key: ${{secrets.STABLE_GABLE_API_KEY}}
+            gable-api-endpoint: ${{secrets.STABLE_GABLE_API_ENDPOINT}}
+            python-path: pyspark/.venv/bin/python
+            data-asset-options: |
+              --source-type pyspark \
+              --project-root pyspark \
+              --csv-schema-file pyspark/schemas.csv \
+              --spark-job-entrypoint 'job.py --final_output_table pnw_bookings_30_days' --debug
       - name: Register Postgres Data Assets
-        uses: gabledata/cicd/github-actions/register-data-assets@latest
+        uses: gabledata/cicd/github-actions/register-data-assets@main
         with:
             # Provide API key and endpoint secrets
             gable-api-key: ${{secrets.STABLE_GABLE_API_KEY}}
