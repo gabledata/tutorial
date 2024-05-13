@@ -1,8 +1,8 @@
-id: b67b73b5-9830-4053-8a07-d7afb8199999
-dataAssetResourceName: pyspark://git@github.com:gabledata/tutorial-test:pyspark:job_e2e.py:pnw_bookings_30_days
-doc: "E2E Testing"
+id: b67b73b5-9830-4053-8a07-bbbfb8112345
+dataAssetResourceName: pyspark://git@github.com:adrianisk/tutorial:pyspark:job.py:pnw_bookings_30_days
+doc: "Recent bookings in the PNW region for the last 30 days"
 name: pnw_bookings_30_days
-namespace: "E2E"
+namespace: "AdrianDemo"
 owner: "engineers@gable.ai"
 schema:
   # TODO: fix once the new timestamp behavior is deployed everywhere
@@ -11,28 +11,28 @@ schema:
   #   doc: "E2E Testing"
   - name: commission_rate
     type: float64
-    doc: "E2E Testing"
+    doc: "Commission rate for the booking"
   - name: payment_type
     type: string
-    doc: "E2E Testing"
+    doc: "Payment type for the booking"
   - name: reward_id
     type: int64
-    doc: "E2E Testing"
+    doc: "Reward ID for the booking"
   - name: city_id
     type: string
-    doc: "E2E Testing"
+    doc: "ID of the city"
   - name: city_name
     type: string
-    doc: "E2E Testing"
+    doc: "Name of the city"
   - name: city_code
     type: string
-    doc: "E2E Testing"
+    doc: "Code of the city"
   - name: country_id
     type: string
-    doc: "E2E Testing"
+    doc: "ID of the country"
   - name: region
     type: string
-    doc: "E2E Testing"
+    doc: "Region of the city"
 
   # TODO: fix once the new timestamp behavior is deployed everywhere
   # - name: created_at
@@ -40,4 +40,4 @@ schema:
   #   doc: "E2E Testing"
   - name: enable_tip
     type: bool
-    doc: "E2E Testing"
+    doc: "Whether tip is enabled"

@@ -67,8 +67,14 @@ jobs:
         run: curl -sSL https://install.python-poetry.org | python3 -
         shell: bash
       - name: Install dependencies
-        run: poetry install
         shell: bash
+        run: |
+          # Install root level dependencies
+          poetry install
+          # Create a virtual environment for the PySpark project, install dependencies
+          python3 -m venv "pyspark/.venv"
+          pyspark/.venv/bin/pip install -r pyspark/requirements.txt
+          ls -la pyspark/.venv/bin
       - name: Run migrations from db_migrations directory
         working-directory: ./db_migrations
         run: poetry run alembic upgrade head

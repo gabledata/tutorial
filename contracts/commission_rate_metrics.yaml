@@ -1,8 +1,8 @@
-id: 0ea84206-7d38-4240-912f-540a370318fa
-dataAssetResourceName: pyspark://git@github.com:gabledata/tutorial-test:pyspark:job_e2e.py:commission_rate_metrics
-doc: "E2E Testing"
+id: 0ea84206-7d38-4240-912f-aaaa370318fa
+dataAssetResourceName: pyspark://git@github.com:adrianisk/tutorial:pyspark:job.py:commission_rate_metrics
+doc: "Metrics for commission rates"
 name: commission_rate_metrics
-namespace: "E2E"
+namespace: "AdrianDemo"
 owner: "engineers@gable.ai"
 schema:
   # TODO: fix once the new timestamp behavior is deployed everywhere
