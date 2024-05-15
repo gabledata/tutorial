@@ -1,0 +1,13 @@
+id: 4f566f66-f7ef-42a0-84d2-9935ce4875b7
+dataAssetResourceName: "typescript://git@github.com:adrianisk/tutorial:typescript:segment:Create order"
+doc: "Event logged when an order is created."
+name: Create order
+namespace: "demo"
+owner: "adrian@gable.ai"
+schema:
+  - name: orderId
+    type: string
+    doc: "The unique identifier of the order."
+  - name: numOfProducts
+    type: string
+    doc: "The number of products in the order."

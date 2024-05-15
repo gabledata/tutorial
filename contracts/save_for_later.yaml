@@ -1,0 +1,10 @@
+id: 855ad8a4-d833-4245-a9db-999abddef39c
+dataAssetResourceName: "typescript://git@github.com:adrianisk/tutorial:typescript:segment:Save for later"
+doc: "User saves an item for later"
+name: Save for later
+namespace: gitlab
+owner: "engineers@gable.ai"
+schema:
+  - name: productId
+    type: string
+    doc: "The ID of the product"

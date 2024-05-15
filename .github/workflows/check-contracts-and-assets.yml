@@ -79,6 +79,20 @@ jobs:
         working-directory: ./db_migrations
         run: poetry run alembic upgrade head
         shell: bash
+      - name: Check TypeScript Data Assets
+        uses: gabledata/cicd/github-actions/check-data-assets@main
+        with:
+            # Provide API key secret, and endpoint variable created in previous steps
+            gable-api-key: ${{secrets.STABLE_GABLE_API_KEY}}
+            gable-api-endpoint: ${{secrets.STABLE_GABLE_API_ENDPOINT}}
+            # List of paths to Protobuf files that should be checked with support for glob syntax. 
+            # Can either be specified as a space separated list ('event1.proto event2.proto'), or 
+            # a multiline string
+            data-asset-options: |
+              --source-type typescript \
+              --project-root typescript \
+              --library segment
+      
       - name: Check Protobuf Data Assets
         uses: gabledata/cicd/github-actions/check-data-assets@main
         with:
