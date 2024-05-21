@@ -17,7 +17,7 @@ app.post('/savecart', (req, res) => {
     analytics.track({
       userId: req.body.userId,
       event: 'Save for later',
-      properties: { productId: '99482' }
+      properties: { productId: `${req.body.productId}` }
     })
      res.sendStatus(201)
   });

@@ -8,6 +8,12 @@ schema:
   - name: orderId
     type: string
     doc: "The unique identifier of the order."
-  - name: numOfProducts
-    type: string
+  - name: numProducts
+    type: float64
     doc: "The number of products in the order."
+  - name: totalCost
+    type: float64
+    doc: "Total cost of the order, including tax."
+  - name: userId
+    type: string
+    doc: "User who placed the order."
