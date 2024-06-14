@@ -13,7 +13,7 @@ app.post('/createorder', (req, res) => {
     analytics.track({
       userId: req.body.userId,
       event: 'Create order',
-      properties: { orderId: '99482', numOfProducts: '5' }
+      properties: { orderId: '99482', numOfProducts: 123 }
     })
      res.sendStatus(201)
   });

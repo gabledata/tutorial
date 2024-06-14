@@ -1,0 +1,13 @@
+id: a82ddfa5-c7a6-4179-bf30-2d50e6e57bad
+dataAssetResourceName: typescript://git@github.com:gabledata/tutorial:typescript:segment:Create order
+doc: "PLACEHOLDER: Add documentation"
+name: Create order
+namespace: typescript
+owner: suzanne@gable.ai
+schema:
+  - name: orderId
+    type: string
+    doc: "PLACEHOLDER: Add documentation"
+  - name: numOfProducts
+    type: string
+    doc: "PLACEHOLDER: Add documentation"
