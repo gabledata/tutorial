@@ -7,7 +7,7 @@ import "google/protobuf/timestamp.proto";
 message OrderCreated {
     required string order_id = 1;
     required string user_id = 2;
-    required string total_amount = 3;
+    required float total_amount = 3;
     required google.protobuf.Timestamp created_at = 4;
     required int32 total_items = 5;
 }
