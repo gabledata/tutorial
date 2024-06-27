@@ -1,0 +1,4 @@
+numpy==1.26.4
+pandas==2.2.1
+pyspark==3.5.1
+gable>=0.10.0a0
