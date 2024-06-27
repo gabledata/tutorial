@@ -29,7 +29,7 @@ def run_job(spark, final_output_table):
           receipt_payment_type,
           confirm_time,    
           reward_id,
-      FROM booking WHERE confirm_time >= date_sub(current_date(), 30)
+      FROM booking
     )
     SELECT
         booking_id,
