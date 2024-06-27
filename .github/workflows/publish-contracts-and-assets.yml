@@ -9,67 +9,67 @@ permissions:
   # Required to checkout the contracts from the repo
   contents: read
 jobs:
-  validate-publish-contracts:
-    runs-on: ubuntu-latest
-    name: 'Validate & Publish Contracts'
-    needs: [register-data-assets]
-    steps:    
-      - name: Check out repository code
-        uses: actions/checkout@v3
-      # By default, the Gable CLI will exit with a non-zero exit code if no contracts are found when calling the
-      # validate or publish command. For this tutorial, there won't be any contracts in the repo to start, so we
-      # need this extra step to check if we should skip validation
-      - shell: bash
-        run: |
-          set +e
-          sh -c "ls ./contracts/*.yaml"
-          if [ $? -eq 0 ]; then
-              echo "Found contract files, publishing contracts..."
-          else
-              echo "No contract files found, skipping contract validation..."
-              echo SKIP_VALIDATION=true >> $GITHUB_ENV
-          fi
-      - name: Validate Contracts
-        if: ${{ env.SKIP_VALIDATION  != 'true' }}
-        uses: gabledata/cicd/github-actions/validate-contracts@main
-        with:
-          # Provide API key and endpoint secrets
-          gable-api-key: ${{secrets.STABLE_GABLE_API_KEY}}
-          gable-api-endpoint: ${{secrets.STABLE_GABLE_API_ENDPOINT}}
-          # List of paths to contract files that should be validated, with support for glob syntax.
-          # Can either be specified as a space separated list ('contract1.yml contract2.yml'), or
-          # a multiline string
-          contract-paths: |
-            ./contracts/*.yaml
-      - name: Publish Contracts
-        if: ${{ env.SKIP_VALIDATION  != 'true' }}
-        uses: gabledata/cicd/github-actions/publish-contracts@main
-        with:
-          # Provide API key and endpoint secrets
-          gable-api-key: ${{secrets.STABLE_GABLE_API_KEY}}
-          gable-api-endpoint: ${{secrets.STABLE_GABLE_API_ENDPOINT}}
-          # List of paths to contract files that should be published, with support for glob syntax.
-          # Can either be specified as a space separated list ('contract1.yml contract2.yml'), or
-          # a multiline string
-          contract-paths: |
-            ./contracts/*.yaml
+  # validate-publish-contracts:
+  #   runs-on: ubuntu-latest
+  #   name: 'Validate & Publish Contracts'
+  #   needs: [register-data-assets]
+  #   steps:    
+  #     - name: Check out repository code
+  #       uses: actions/checkout@v3
+  #     # By default, the Gable CLI will exit with a non-zero exit code if no contracts are found when calling the
+  #     # validate or publish command. For this tutorial, there won't be any contracts in the repo to start, so we
+  #     # need this extra step to check if we should skip validation
+  #     - shell: bash
+  #       run: |
+  #         set +e
+  #         sh -c "ls ./contracts/*.yaml"
+  #         if [ $? -eq 0 ]; then
+  #             echo "Found contract files, publishing contracts..."
+  #         else
+  #             echo "No contract files found, skipping contract validation..."
+  #             echo SKIP_VALIDATION=true >> $GITHUB_ENV
+  #         fi
+  #     - name: Validate Contracts
+  #       if: ${{ env.SKIP_VALIDATION  != 'true' }}
+  #       uses: gabledata/cicd/github-actions/validate-contracts@main
+  #       with:
+  #         # Provide API key and endpoint secrets
+  #         gable-api-key: ${{secrets.STABLE_GABLE_API_KEY}}
+  #         gable-api-endpoint: ${{secrets.STABLE_GABLE_API_ENDPOINT}}
+  #         # List of paths to contract files that should be validated, with support for glob syntax.
+  #         # Can either be specified as a space separated list ('contract1.yml contract2.yml'), or
+  #         # a multiline string
+  #         contract-paths: |
+  #           ./contracts/*.yaml
+  #     - name: Publish Contracts
+  #       if: ${{ env.SKIP_VALIDATION  != 'true' }}
+  #       uses: gabledata/cicd/github-actions/publish-contracts@main
+  #       with:
+  #         # Provide API key and endpoint secrets
+  #         gable-api-key: ${{secrets.STABLE_GABLE_API_KEY}}
+  #         gable-api-endpoint: ${{secrets.STABLE_GABLE_API_ENDPOINT}}
+  #         # List of paths to contract files that should be published, with support for glob syntax.
+  #         # Can either be specified as a space separated list ('contract1.yml contract2.yml'), or
+  #         # a multiline string
+  #         contract-paths: |
+  #           ./contracts/*.yaml
   register-data-assets:
     runs-on: ubuntu-latest
     name: 'Register Data Assets'
-    services:
-      postgres:
-        image: postgres:14
-        env:
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: postgres
-          POSTGRES_DB: tutorial
-        ports:
-          - 5432:5432
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
+    # services:
+    #   postgres:
+    #     image: postgres:14
+    #     env:
+    #       POSTGRES_USER: postgres
+    #       POSTGRES_PASSWORD: postgres
+    #       POSTGRES_DB: tutorial
+    #     ports:
+    #       - 5432:5432
+    #     options: >-
+    #       --health-cmd pg_isready
+    #       --health-interval 10s
+    #       --health-timeout 5s
+    #       --health-retries 5
     steps:
       - name: Check out repository code
         uses: actions/checkout@v3
@@ -77,87 +77,95 @@ jobs:
         uses: actions/setup-python@v4
         with:
             python-version: 3.10.11
-      - name: Install Poetry
-        run: curl -sSL https://install.python-poetry.org | python3 -
-        shell: bash
+      # - name: Install Poetry
+      #   run: curl -sSL https://install.python-poetry.org | python3 -
+      #   shell: bash
       - name: Install dependencies
         shell: bash
         run: |
-          # Install root level dependencies
-          poetry install
           # Create a virtual environment for the PySpark project, install dependencies
-          python3 -m venv "pyspark/.venv"
-          pyspark/.venv/bin/pip install -r pyspark/requirements.txt
-          ls -la pyspark/.venv/bin
-      - name: Run migrations from db_migrations directory
-        working-directory: ./db_migrations
-        run: poetry run alembic upgrade head
-        shell: bash
-      - name: Check TypeScript Data Assets
-        uses: gabledata/cicd/github-actions/check-data-assets@main
-        with:
-            # Provide API key secret, and endpoint variable created in previous steps
-            gable-api-key: ${{secrets.STABLE_GABLE_API_KEY}}
-            gable-api-endpoint: ${{secrets.STABLE_GABLE_API_ENDPOINT}}
-            # List of paths to Protobuf files that should be checked with support for glob syntax. 
-            # Can either be specified as a space separated list ('event1.proto event2.proto'), or 
-            # a multiline string
-            data-asset-options: |
-              --source-type typescript \
-              --project-root typescript \
-              --library segment
-      - name: Register Protobuf Data Assets
-        uses: gabledata/cicd/github-actions/register-data-assets@main
-        with:
-            # Provide API key and endpoint secrets
-            gable-api-key: ${{secrets.STABLE_GABLE_API_KEY}}
-            gable-api-endpoint: ${{secrets.STABLE_GABLE_API_ENDPOINT}}
-            # List of paths to Protobuf files that should be checked with support for glob syntax. 
-            # Can either be specified as a space separated list ('event1.proto event2.proto'), or 
-            # a multiline string
-            data-asset-options: |
-              --source-type protobuf \
-              --files ./event_schemas/*.proto
-      - name: Register Avro Data Assets
-        uses: gabledata/cicd/github-actions/register-data-assets@main
-        with:
-            # Provide API key and endpoint secrets
-            gable-api-key: ${{secrets.STABLE_GABLE_API_KEY}}
-            gable-api-endpoint: ${{secrets.STABLE_GABLE_API_ENDPOINT}}
-            # List of paths to Avro files that should be checked with support for glob syntax. 
-            # Can either be specified as a space separated list ('event1.proto event2.proto'), or 
-            # a multiline string
-            data-asset-options: |
-              --source-type avro \
-              --files ./event_schemas/*.avsc
+          python3 -m venv "pyspark_llm/.venv"
+          pyspark_llm/.venv/bin/pip install -r pyspark_llm/requirements.txt
+          ls -la pyspark_llm/.venv/bin
+      # - name: Run migrations from db_migrations directory
+      #   working-directory: ./db_migrations
+      #   run: poetry run alembic upgrade head
+      #   shell: bash
+      # - name: Register TypeScript Data Assets
+      #   uses: gabledata/cicd/github-actions/register-data-assets@test_pypi
+      #   with:
+      #       # Provide API key secret, and endpoint variable created in previous steps
+      #       gable-api-key: ${{secrets.STABLE_GABLE_API_KEY}}
+      #       gable-api-endpoint: ${{secrets.STABLE_GABLE_API_ENDPOINT}}
+      #       allow-gable-pre-release: true
+      #       use-test-pypi: true
+      #       # List of paths to Protobuf files that should be checked with support for glob syntax. 
+      #       # Can either be specified as a space separated list ('event1.proto event2.proto'), or 
+      #       # a multiline string
+      #       data-asset-options: |
+      #         --source-type typescript \
+      #         --project-root typescript \
+      #         --library segment
+      # - name: Register Protobuf Data Assets
+      #   uses: gabledata/cicd/github-actions/register-data-assets@test_pypi
+      #   with:
+      #       # Provide API key and endpoint secrets
+      #       gable-api-key: ${{secrets.STABLE_GABLE_API_KEY}}
+      #       gable-api-endpoint: ${{secrets.STABLE_GABLE_API_ENDPOINT}}
+      #       allow-gable-pre-release: true
+      #       use-test-pypi: true
+      #       # List of paths to Protobuf files that should be checked with support for glob syntax. 
+      #       # Can either be specified as a space separated list ('event1.proto event2.proto'), or 
+      #       # a multiline string
+      #       data-asset-options: |
+      #         --source-type protobuf \
+      #         --files ./event_schemas/*.proto
+      # - name: Register Avro Data Assets
+      #   uses: gabledata/cicd/github-actions/register-data-assets@test_pypi
+      #   with:
+      #       # Provide API key and endpoint secrets
+      #       gable-api-key: ${{secrets.STABLE_GABLE_API_KEY}}
+      #       gable-api-endpoint: ${{secrets.STABLE_GABLE_API_ENDPOINT}}
+      #       allow-gable-pre-release: true
+      #       use-test-pypi: true
+      #       # List of paths to Avro files that should be checked with support for glob syntax. 
+      #       # Can either be specified as a space separated list ('event1.proto event2.proto'), or 
+      #       # a multiline string
+      #       data-asset-options: |
+      #         --source-type avro \
+      #         --files ./event_schemas/*.avsc
       - name: Register PySpark Data Assets
-        uses: gabledata/cicd/github-actions/register-data-assets@main
+        uses: gabledata/cicd/github-actions/register-data-assets@test_pypi
         with:
             # Provide API key and endpoint secrets
             gable-api-key: ${{secrets.STABLE_GABLE_API_KEY}}
             gable-api-endpoint: ${{secrets.STABLE_GABLE_API_ENDPOINT}}
-            python-path: pyspark/.venv/bin/python
+            use-test-pypi: true
+            gable-version: "0.15.4a2"
+            python-path: pyspark_llm/.venv/bin/python
             data-asset-options: |
               --source-type pyspark \
-              --project-root pyspark \
-              --csv-schema-file pyspark/schemas.csv \
-              --spark-job-entrypoint 'job.py --final_output_table pnw_bookings_30_days' --debug
-      - name: Register Postgres Data Assets
-        uses: gabledata/cicd/github-actions/register-data-assets@main
-        with:
-            # Provide API key and endpoint secrets
-            gable-api-key: ${{secrets.STABLE_GABLE_API_KEY}}
-            gable-api-endpoint: ${{secrets.STABLE_GABLE_API_ENDPOINT}}
-            # List of paths to Avro files that should be checked with support for glob syntax. 
-            # Can either be specified as a space separated list ('event1.proto event2.proto'), or 
-            # a multiline string
-            data-asset-options: |
-              --source-type postgres \
-              --host prod.store.com \
-              --port 5432 \
-              --db tutorial \
-              --schema public \
-              --proxy-host 0.0.0.0 \
-              --proxy-port 5432 \
-              --proxy-user postgres \
-              --proxy-password postgres
+              --project-root pyspark_llm \
+              --csv-schema-file pyspark_llm/schemas.csv \
+              --spark-job-entrypoint 'job.py --final_output_table bookings_30_days_with_city' --debug
+      # - name: Register Postgres Data Assets
+      #   uses: gabledata/cicd/github-actions/register-data-assets@test_pypi
+      #   with:
+      #       # Provide API key and endpoint secrets
+      #       gable-api-key: ${{secrets.STABLE_GABLE_API_KEY}}
+      #       gable-api-endpoint: ${{secrets.STABLE_GABLE_API_ENDPOINT}}
+      #       allow-gable-pre-release: true
+      #       use-test-pypi: true
+      #       # List of paths to Avro files that should be checked with support for glob syntax. 
+      #       # Can either be specified as a space separated list ('event1.proto event2.proto'), or 
+      #       # a multiline string
+      #       data-asset-options: |
+      #         --source-type postgres \
+      #         --host prod.store.com \
+      #         --port 5432 \
+      #         --db tutorial \
+      #         --schema public \
+      #         --proxy-host 0.0.0.0 \
+      #         --proxy-port 5432 \
+      #         --proxy-user postgres \
+      #         --proxy-password postgres
