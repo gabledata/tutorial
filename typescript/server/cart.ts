@@ -8,7 +8,7 @@ app.post('/cart', (req, res) => {
   analytics.track({
     userId: req.body.userId,
     event: 'Add to cart',
-    properties: { productId: '123456', quantity: '5' }
+    properties: { /*productId: '123456', */quantity: '5' }
   })
    res.sendStatus(201)
 });
