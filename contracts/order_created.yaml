@@ -1,0 +1,30 @@
+id: a1e6540d-bf91-423a-8b4e-a2cafc497782
+dataAssetResourceName: protobuf://git@github.com:gabledata/tutorial/event_schemas/OrderCreated.proto:tutorial.OrderCreated
+doc: "PLACEHOLDER: Add documentation"
+name: OrderCreated
+namespace: tutorial
+owner: eng@gable.ai
+schema:
+  - name: order_id
+    type: string
+    bytes: 2147483648
+    doc: "PLACEHOLDER: Add documentation"
+  - name: user_id
+    type: string
+    bytes: 2147483648
+    doc: "PLACEHOLDER: Add documentation"
+  - name: total_amount
+    type: float
+    bits: 32
+    doc: "PLACEHOLDER: Add documentation"
+  - name: created_at
+    type: int
+    logical: Timestamp
+    unit: nanosecond
+    timezone: UTC
+    bits: 64
+    doc: "PLACEHOLDER: Add documentation"
+  - name: total_items
+    type: int
+    bits: 32
+    doc: "PLACEHOLDER: Add documentation"
