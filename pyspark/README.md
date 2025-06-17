@@ -48,11 +48,13 @@ node --version
 
 From the `pyspark` folder
 
-1. Start the hive container, which is automatically seeded with example table schemas
+1. (Optional) If you want to try the Hive schema integration, start the hive container which is automatically seeded with example table schemas.
 
     ```bash
     docker-compose -f ./docker/docker-compose.yml up -d 
     ```
+
+    This step can be skipped when using the csv schema option.
 
 2. Create and activate a virtual environment, install dependencies
 
@@ -61,7 +63,7 @@ From the `pyspark` folder
     ```bash
     python3 -m venv ".venv"
     source ".venv/bin/activate"
-    pip3 install --pre -r requirements.txt
+    pip3 install -r requirements.txt
     ```
 
 3. Set your Gable API Key
